@@ -17,5 +17,8 @@ export default {
 		confirm_password: "confirm password",
 		password_error: "username or password error",
 		invalid_username: "invalid username"
+	},
+	story: {
+		main_story:["In the year 2136, the global icebergs had melted.", "Sea levels rose significantly.", "Most cities were submerged.", "You are now stranded on a small island, waiting for rescue.", "You survive each day by fishing."]
 	}
 };

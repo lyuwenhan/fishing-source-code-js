@@ -16,7 +16,7 @@ export async function start(write, loadGame, saveGame, hasSave, giveOnInput, giv
 		await functions.printa(text)
 	}
 	await functions.clear();
-	if (!await checkpoint.login()) {
+	if (await checkpoint.login()) {
 		await functions.sleep(1);
 		await functions.choose()
 	}

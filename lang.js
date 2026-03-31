@@ -5,12 +5,17 @@ const allLangs = {
 	CN
 };
 const langs = {
-	...allLangs,
+	langs: allLangs,
+	langCode: "EN",
 	current: allLangs.EN
 };
 export function setLanguage(lang) {
-	if (langs[lang]) {
-		langs.current = langs[lang]
+	if (allLangs[lang]) {
+		langs.langCode = lang;
+		langs.current = {
+			...allLangs["EN"],
+			...allLangs[lang]
+		}
 	}
 }
 export default langs;

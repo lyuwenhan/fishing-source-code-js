@@ -157,12 +157,12 @@ export function capitalize(text) {
 export async function printnl(text, time = .02) {
 	await write("[?25l");
 	try {
-		if (!isNumberBetween(data.gameState.dataSaver.speed, 0, 1) || time <= 0) {
+		if (!isNumberBetween(data.gameState.dataSaver.textSpeed, 0, 1) || time <= 0) {
 			await write(text)
 		} else {
 			for (const char of text) {
 				await write(char);
-				await sleep(time / (data.gameState.dataSaver.speed + 1) / lang.current.functions.output_speed)
+				await sleep(time / (data.gameState.dataSaver.textSpeed + 1) / lang.current.functions.output_speed)
 			}
 		}
 	} finally {
@@ -202,7 +202,7 @@ export async function choose() {
 	do {
 		c = await getch()
 	} while (!/[1-3]/.test(c));
-	data.gameState.dataSaver.speed = Number(c) - 1;
+	data.gameState.dataSaver.textSpeed = Number(c) - 1;
 	await clear();
 	for (let text of lang.current.functions.skills) {
 		await print(text)
@@ -216,11 +216,11 @@ export async function choose() {
 			data.gameState.dataSaver.incomeLevel = 5;
 			break
 		} else if (c === "3") {
-			data.gameState.dataSaver.slip = 10;
+			data.gameState.dataSaver.slipOffChance = 10;
 			break
 		} else if (c === "4") {
-			data.gameState.dataSaver.cleaning_ball = 1;
-			data.gameState.dataSaver.cleaning_sub = 2;
+			data.gameState.dataSaver.cleanerCount = 1;
+			data.gameState.dataSaver.cleaningMultiplier = 2;
 			break
 		} else if (c === "5") {
 			data.gameState.dataSaver.actionSpeedMultiplier = 2;
@@ -242,6 +242,6 @@ export async function setSpeed() {
 		c = Number(await getch())
 	} while (!isNumberBetween(c, 1, 4));
 	if (c <= 3) {
-		data.gameState.dataSaver.speed = c - 1
+		data.gameState.dataSaver.textSpeed = c - 1
 	}
 }

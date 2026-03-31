@@ -15,17 +15,17 @@ export const getData = () => ({
 	totalFishCaught: 0,
 	bigFishChance: 20,
 	actionSpeedMultiplier: 1,
-	slip: 50,
-	cleaning_ball: 0,
-	cleaning_sub: 1,
-	gan: 1,
-	aqcnt: 0,
-	speed: 2,
-	try_level: 0,
-	roast: 0,
-	hungry: 20,
-	aqfish_cnt: [0, 0, 0, 0, 0, 0, 0],
-	fish: [
+	slipOffChance: 50,
+	cleanerCount: 0,
+	cleaningMultiplier: 1,
+	rodLevel: 1,
+	textSpeed: 2,
+	challengeLevel: 0,
+	ovenCount: 0,
+	hunger: 20,
+	aquariumCapacity: 0,
+	aquariumFishCounts: [0, 0, 0, 0, 0, 0, 0],
+	foodFish: [
 		[0, 0],
 		[0, 0],
 		[0, 0],
@@ -34,7 +34,7 @@ export const getData = () => ({
 		[0, 0],
 		[0, 0]
 	],
-	simple: false
+	compactMode: false
 });
 export const getGameState = () => ({
 	username: "",

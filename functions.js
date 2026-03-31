@@ -55,7 +55,7 @@ export function onInput(str) {
 	if (typeof str !== "string") {
 		str = String(str)
 	}
-	for (const ch of str.replace(/\r\n/g, "\r").replace(/\n/g, "\r").replace(/\b/g, "")) {
+	for (const ch of [...str.replace(/\r\n/g, "\r").replace(/\n/g, "\r").replace(/\x08/g, "")]) {
 		if (waitingResolvers.length > 0) {
 			const resolve = waitingResolvers.shift();
 			resolve(ch)

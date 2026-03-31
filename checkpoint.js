@@ -71,6 +71,6 @@ export async function login() {
 			}
 		}
 		await functions.clear();
-		break
+		return isNew
 	}
 }

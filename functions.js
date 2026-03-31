@@ -16,13 +16,13 @@ export function deepCopy(obj) {
 export const requiredFunctions = {
 	write: async text => console.log(text),
 	loadGame: async () => ({
-		code: false
+		code: 0
 	}),
 	saveGame: async () => ({
-		code: false
+		code: 0
 	}),
 	hasSave: async () => ({
-		code: false
+		code: 0
 	})
 };
 export function setFunctions(write, loadGame, saveGame, hasSave) {

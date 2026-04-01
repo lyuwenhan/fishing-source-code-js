@@ -13,24 +13,24 @@ export default async function lottery(){
 		while(true){
 			char c = getch();
 			if(c === '1'){
-				if(variate.data_saver.cnt < 100 && variate.data_saver.money < 1000){
+				if(data.gameState.dataSaver.cnt < 100 && data.gameState.dataSaver.money < 1000){
 					print(sp_7);
 					sleep(1);
 					break;
 				}
-				if(variate.data_saver.cnt < 100){
+				if(data.gameState.dataSaver.cnt < 100){
 					print(sp_8);
 					sleep(1);
 					break;
 				}
-				if(variate.data_saver.money < 1000){
+				if(data.gameState.dataSaver.money < 1000){
 					print(sp_9);
 					sleep(1);
 					break;
 				}
 
-				variate.data_saver.cnt -= 100;
-				variate.data_saver.money -= 1000;
+				data.gameState.dataSaver.cnt -= 100;
+				data.gameState.dataSaver.money -= 1000;
 				int ran = random(1, 100);
 				if(ran <= 20){
 					print(sp_10);
@@ -54,7 +54,7 @@ export default async function lottery(){
 		}
 		clear();
 		cout << sp_1 << endl;
-		cout << sp_2 << variate.data_saver.cnt << sp_3 << variate.data_saver.money << endl;
+		cout << sp_2 << data.gameState.dataSaver.cnt << sp_3 << data.gameState.dataSaver.money << endl;
 		cout << sp_4 << endl;
 		cout << sp_5 << endl;
 		cout << sp_6 << endl;

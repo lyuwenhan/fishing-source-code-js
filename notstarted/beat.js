@@ -48,11 +48,11 @@ namespace beat{
 		if(now === 21){
 			if(!romar){
 				printa(be_2);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}
 			if(romar === 5){
 				printa(be_3);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}
 			romar++;
 		}
@@ -60,11 +60,11 @@ namespace beat{
 		if(now === 22){
 			if(!america){
 				printa(be_4);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}
 			if(america === 5){
 				printa(be_3);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}
 			america++;
 		}
@@ -72,11 +72,11 @@ namespace beat{
 		if(now === 24){
 			if(!headbone){
 				printa(be_5);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}
 			if(headbone === 5){
 				printa(be_6);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}
 			headbone++;
 		}
@@ -99,10 +99,10 @@ namespace beat{
 		if(now === 13){
 			if(!temple){
 				printa(be_7);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}else if(temple === 5){
 				printa(be_8);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}
 			temple++;
 		}
@@ -110,7 +110,7 @@ namespace beat{
 		if(now === 30){
 			if(eatcnt >= 30 && !drafood){
 				printa(be_9);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}
 			drafood++;
 		}
@@ -118,10 +118,10 @@ namespace beat{
 		if(now === -3){
 			if(eatcnt >= 30 && e2 === 0){
 				printa(be_10);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}else if(eatcnt >= 30 && e2 === 5){
 				printa(be_11);
-				variate.data_saver.money += 200;
+				data.gameState.dataSaver.money += 200;
 			}
 			e2++;
 			now = 1;
@@ -130,10 +130,10 @@ namespace beat{
 		if(now === -4){
 			if(sleepcnt >= 30 && s2 === 0){
 				printa(be_12);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}else if(sleepcnt >= 30 && s2 === 5){
 				printa(be_13);
-				variate.data_saver.money += 200;
+				data.gameState.dataSaver.money += 200;
 			}
 			s2++;
 			now = 1;
@@ -143,13 +143,13 @@ namespace beat{
 			eatcnt++;
 			if(eatcnt === 5){
 				printa(be_14);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}else if(eatcnt === 10){
 				printa(be_15);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}else if(eatcnt === 30){
 				printa(be_16);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}
 			now = 1;
 		}
@@ -158,13 +158,13 @@ namespace beat{
 			sleepcnt++;
 			if(sleepcnt === 5){
 				printa(be_17);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}else if(sleepcnt === 10){
 				printa(be_18);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}else if(sleepcnt === 30){
 				printa(be_19);
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.money += 100;
 			}
 			now = 1;
 		}
@@ -180,8 +180,8 @@ namespace beat{
 			cout << things[now] << endl;
 			if(now === -5){
 				printa(be_end);
-				variate.data_saver.try_level++;
-				variate.data_saver.money += 100;
+				data.gameState.dataSaver.try_level++;
+				data.gameState.dataSaver.money += 100;
 				return;
 			}
 		}

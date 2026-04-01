@@ -200,6 +200,7 @@ export function random(l, r) {
 	return Math.floor(Math.random() * (r - l + 1)) + l
 }
 export async function choose() {
+	await clear();
 	await print(lang.current.functions.choose_speed);
 	await print(listToChoice(lang.current.functions.speed_name));
 	let c;
@@ -236,7 +237,6 @@ export async function choose() {
 			break
 		}
 	}
-	await clear()
 }
 export async function setTextSpeed() {
 	await clear();

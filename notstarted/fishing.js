@@ -119,16 +119,16 @@ namespace fishing{
 		}
 		return wea;
 	}
-	inline int rand_time(int l = variate.data_saver.level){
+	inline int rand_time(int l = data.gameState.dataSaver.level){
 		return random(variate.mintime[l], variate.maxtime[l]);
 	}
-	inline int gr(int l = variate.data_saver.get_level, int bei = 1){
+	inline int gr(int l = data.gameState.dataSaver.get_level, int bei = 1){
 		return random(bei * variate.minget[l], bei * variate.maxget[l]);
 	}
 	inline int gettype(){
 		int ty = random(1, 10000);
 		for(int i = 0; i <= 6; i++){
-			ty -= fish_gai[variate.data_saver.gan][i];
+			ty -= fish_gai[data.gameState.dataSaver.gan][i];
 			if(ty <= 0){
 				return i;
 			}
@@ -137,12 +137,12 @@ namespace fishing{
 	}
 	inline void get(bool is_big, int type){
 		clear();
-		if(variate.data_saver.hungry <= 2){
+		if(data.gameState.dataSaver.hungry <= 2){
 			printa((string)fi_got + fish_color[type] + fish_name[type] + (is_big ? fi_bf : "") + fi_eaten);
-			variate.data_saver.hungry += type + 3;
+			data.gameState.dataSaver.hungry += type + 3;
 			return;
 		}
-		int pri = gr(variate.data_saver.get_level, (is_big + 1) * fish_add[type]);
+		int pri = gr(data.gameState.dataSaver.get_level, (is_big + 1) * fish_add[type]);
 		if(type === 4 && is_big){
 			clear();
 			printa((string)fi_got + fish_color[type] + fi_egg + to_string(pri));
@@ -151,32 +151,32 @@ namespace fishing{
 		}
 		int cnt = 0;
 		for(int i = 0; i <= 6; i++){
-			cnt += variate.data_saver.aqfish_cnt[i];
+			cnt += data.gameState.dataSaver.aqfish_cnt[i];
 		}
 		int i;
 		for(i = 0; i < type; i++){
-			if(variate.data_saver.aqfish_cnt[i]){
+			if(data.gameState.dataSaver.aqfish_cnt[i]){
 				break;
 			}
 		}
-		if(variate.data_saver.aqcnt && (cnt < variate.data_saver.aqcnt || !variate.data_saver.aqfish_cnt[i] || i === type)){
+		if(data.gameState.dataSaver.aqcnt && (cnt < data.gameState.dataSaver.aqcnt || !data.gameState.dataSaver.aqfish_cnt[i] || i === type)){
 			if(printYn(fi_inaqua)){
-				variate.data_saver.aqfish_cnt[type]++;
-				if(cnt >= variate.data_saver.aqcnt){
-					variate.data_saver.aqfish_cnt[i]--;
+				data.gameState.dataSaver.aqfish_cnt[type]++;
+				if(cnt >= data.gameState.dataSaver.aqcnt){
+					data.gameState.dataSaver.aqfish_cnt[i]--;
 				}
 				return;
 			}
 		}
 		fish[type].push_back(10);
-		variate.data_saver.cnt++;
+		data.gameState.dataSaver.cnt++;
 	}
 	int lmi = 0;
 	int lma = 0;
 	int lst = 0;
 	bool swp = false;
 	inline void draw(int mi = 0, int ma = 0){
-		variate.data_saver.simple = (variate.data_saver.simple != swp);
+		data.gameState.dataSaver.simple = (data.gameState.dataSaver.simple != swp);
 		bool wcg = false, wcgd = false;
 		const int now = time(0);
 		while(now - la > 10){
@@ -237,15 +237,15 @@ namespace fishing{
 			ter_big = nowsize;
 			need_cl = true;
 		}
-		if(variate.data_saver.simple || size_ok1 || size_ok2){
+		if(data.gameState.dataSaver.simple || size_ok1 || size_ok2){
 			if(need_cl){
 				cout << "\x1bc\x1b[?25l" << flush;
-			}else if(variate.data_saver.simple || wcg){
+			}else if(data.gameState.dataSaver.simple || wcg){
 				cout << "\x1b[H" << flush;
 			}else{
 				return;
 			}
-			if(!variate.data_saver.simple){
+			if(!data.gameState.dataSaver.simple){
 				if(size_ok1){
 					cout << fi_shi << endl;
 					cout << fi_sn << nowsize.second << fi_hi << endl;
@@ -288,7 +288,7 @@ namespace fishing{
 			}
 		}
 		cout << fi_status << statuses[now_status] << endl;
-		cout << fi_allfi << variate.data_saver.cnt << fi_nowwea << ty[weather.second] << wea[weather.first] << endl;
+		cout << fi_allfi << data.gameState.dataSaver.cnt << fi_nowwea << ty[weather.second] << wea[weather.first] << endl;
 		if(ma){
 			if(mi){
 				cout << fi_wait << ": " << mi / 2. << " min ~ " << ma / 2. << " min" << endl;
@@ -296,7 +296,7 @@ namespace fishing{
 				cout << fi_wait << ": < " << ma / 2. << " min" << endl;
 			}
 		}
-		cout << (variate.data_saver.simple ? fi_si : fi_nsi) << endl;
+		cout << (data.gameState.dataSaver.simple ? fi_si : fi_nsi) << endl;
 		swp = false;
 	}
 	void sleepck(double s){
@@ -324,7 +324,7 @@ namespace fishing{
 	}
 	void wait(double s){
 		s = (int)(s * 100 + 0.5) / 100.;
-		int mi = variate.mintime[variate.data_saver.level] * 10, ma = variate.maxtime[variate.data_saver.level] * 10;
+		int mi = variate.mintime[data.gameState.dataSaver.level] * 10, ma = variate.maxtime[data.gameState.dataSaver.level] * 10;
 		if(s && s < 0.01){
 			s = 0.01;
 		}
@@ -347,27 +347,27 @@ namespace fishing{
 		la2 += s;
 	}
 	inline void fishing(bool is_big, int type){
-		const double hung_speed = (variate.data_saver.hungry < 5 ? 3 : (variate.data_saver.hungry < 10 ? 2 : (variate.data_saver.hungry < 30 ? 1 : variate.data_saver.hungry < 35 ? 0.8 : 0.5)));
+		const double hung_speed = (data.gameState.dataSaver.hungry < 5 ? 3 : (data.gameState.dataSaver.hungry < 10 ? 2 : (data.gameState.dataSaver.hungry < 30 ? 1 : data.gameState.dataSaver.hungry < 35 ? 0.8 : 0.5)));
 		cout << "\x1b[?25l" << flush;
 		color[11][18] = "\x1b[1;34m";
 		paint[11][18] = '~';
 		color[10][19] = fish_color[type];
 		paint[11][19] = '^';
 		paint[10][19] = 'O';
-		slep(0.5 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		color[11][19] = "\x1b[1;34m";
 		paint[11][19] = '~';
 		color[9][19] = fish_color[type];
 		paint[10][19] = '^';
 		paint[9][19] = 'O';
-		slep(0.5 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		for(int i = 8; i >= 5; i--){
 			color[i + 2][19] = "";
 			paint[i + 2][19] = ' ';
 			color[i][19] = fish_color[type];
 			paint[i + 1][19] = '^';
 			paint[i][19] = 'O';
-			slep(0.5 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+			slep(0.5 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		}
 		paint[9][24] = paint[8][24] = paint[7][24] = paint[6][24] = '|';
 		paint[8][23] = paint[7][22] = paint[6][21] = paint[5][20] = paint[5][19] = paint[6][19] = ' ';
@@ -375,7 +375,7 @@ namespace fishing{
 		paint[5][23] = '>';
 		paint[5][24] = 'O';
 		color[5][23] = color[5][24] = fish_color[type];
-		slep(0.5 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[9][26] = 'V';
 		paint[8][24] = paint[7][24] = paint[6][24] = paint[5][23] = paint[5][24] = ' ';
 		color[5][23] = color[5][24] = "";
@@ -384,14 +384,14 @@ namespace fishing{
 		paint[5][25] = '>';
 		paint[5][26] = 'O';
 		color[5][25] = color[5][26] = fish_color[type];
-		slep(0.5 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[9][26] = paint[8][27] = paint[7][28] = paint[6][29] = '/';
 		color[5][25] = color[5][26] = "";
 		paint[8][26] = paint[7][26] = paint[6][26] = paint[5][25] = paint[5][26] = ' ';
 		paint[5][29] = '>';
 		paint[5][30] = 'O';
 		color[5][29] = color[5][30] = fish_color[type];
-		slep(0.5 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[8][27] = paint[7][28] = paint[6][29] = paint[5][29] = paint[5][30] = ' ';
 		paint[9][26] = '\\';
 		paint[9][27] = paint[9][28] = paint[9][29] = paint[9][30] = paint[9][31] = paint[9][32] = paint[9][33] = paint[9][34] = '-';
@@ -399,13 +399,13 @@ namespace fishing{
 		paint[9][35] = 'O';
 		color[9][35] = color[8][35] = fish_color[type];
 		color[5][29] = color[5][30] = "";
-		slep(0.5 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[10][35] = 'O';
 		paint[8][35] = ' ';
 		paint[9][35] = 'V';
 		color[10][35] = fish_color[type];
 		color[8][35] = "";
-		slep(0.5 * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[11][34] = '\\';
 		paint[11][36] = '/';
 		for(int i = 11; i <= 12; i++){
@@ -414,27 +414,27 @@ namespace fishing{
 			paint[i - 1][35] = 'V';
 			color[i][35] = fish_color[type];
 			color[i - 2][35] = "";
-			slep(0.5 * (is_big + 1) / variate.data_saver.stime);
+			slep(0.5 * (is_big + 1) / data.gameState.dataSaver.stime);
 		}
 		paint[11][34] = paint[11][35] = paint[11][36] = '~';
 		paint[13][35] = 'O';
 		paint[12][35] = 'V';
 		color[13][35] = fish_color[type];
 		color[11][35] = "\x1b[1;34m";
-		slep(0.5 * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[13][36] = 'O';
 		paint[12][35] = ' ';
 		paint[13][35] = '>';
 		color[13][36] = fish_color[type];
 		color[12][35] = "";
-		slep(0.5 * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * (is_big + 1) / data.gameState.dataSaver.stime);
 		for(int i = 37; i <= 38; i++){
 			paint[13][i] = 'O';
 			paint[13][i - 2] = ' ';
 			paint[13][i - 1] = '>';
 			color[13][i] = fish_color[type];
 			color[13][i - 2] = "";
-			slep(0.5 * (is_big + 1) / variate.data_saver.stime);
+			slep(0.5 * (is_big + 1) / data.gameState.dataSaver.stime);
 		}
 		paint[13][38] = paint[13][37] = ' ';
 		color[13][38] = color[13][37] = "";
@@ -442,14 +442,14 @@ namespace fishing{
 		get(is_big, type);
 	}
 	inline void fishingslip(bool is_big, int type){
-		const double hung_speed = (variate.data_saver.hungry < 5 ? 3 : (variate.data_saver.hungry < 10 ? 2 : (variate.data_saver.hungry < 30 ? 1 : variate.data_saver.hungry < 35 ? 0.8 : 0.5)));
+		const double hung_speed = (data.gameState.dataSaver.hungry < 5 ? 3 : (data.gameState.dataSaver.hungry < 10 ? 2 : (data.gameState.dataSaver.hungry < 30 ? 1 : data.gameState.dataSaver.hungry < 35 ? 0.8 : 0.5)));
 		cout << "\x1b[?25l" << flush;
 		color[11][18] = "\x1b[1;34m";
 		paint[11][18] = '~';
 		color[10][19] = fish_color[type];
 		paint[11][19] = '^';
 		paint[10][19] = 'O';
-		slep(0.3 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+		slep(0.3 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		now_status = 4;
 		color[11][19] = "\x1b[1;34m";
 		paint[11][19] = '~';
@@ -458,44 +458,44 @@ namespace fishing{
 		paint[10][20] = '^';
 		paint[9][19] = 'O';
 		color[10][20] = color[9][19] = fish_color[type];
-		slep(0.3 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+		slep(0.3 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[10][20] = paint[9][19] = ' ';
 		color[10][20] = color[9][19] = "";
 		paint[9][18] = '^';
 		paint[8][19] = 'O';
 		color[9][18] = color[8][19] = fish_color[type];
-		slep(0.3 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+		slep(0.3 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[9][18] = paint[8][19] = ' ';
 		color[9][18] = color[8][19] = "";
 		paint[8][20] = '^';
 		paint[7][19] = 'O';
 		color[8][20] = color[7][19] = fish_color[type];
-		slep(0.3 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+		slep(0.3 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[6][19] = 'j';
 		color[8][20] = "";
 		paint[8][20] = ' ';
 		color[7][20] = fish_color[type];
 		paint[7][20] = '<';
-		slep(0.3 * hung_speed * (is_big + 1) / variate.data_saver.stime);
+		slep(0.3 * hung_speed * (is_big + 1) / data.gameState.dataSaver.stime);
 		color[7][20] = "";
 		paint[5][19] = 'j';
 		paint[7][20] = paint[6][19] = ' ';
 		color[8][19] = fish_color[type];
 		paint[7][19] = 'V';
 		paint[8][19] = 'O';
-		slep(0.5 * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * (is_big + 1) / data.gameState.dataSaver.stime);
 		color[7][19] = "";
 		color[9][19] = fish_color[type];
 		paint[7][19] = ' ';
 		paint[8][19] = 'V';
 		paint[9][19] = 'O';
-		slep(0.5 * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * (is_big + 1) / data.gameState.dataSaver.stime);
 		color[8][19] = "";
 		color[10][19] = fish_color[type];
 		paint[8][19] = ' ';
 		paint[9][19] = 'V';
 		paint[10][19] = 'O';
-		slep(0.5 * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[11][18] = '\\';
 		paint[11][20] = '/';
 		for(int i = 11; i <= 12; i++){
@@ -504,27 +504,27 @@ namespace fishing{
 			paint[i - 2][19] = ' ';
 			paint[i - 1][19] = 'V';
 			paint[i][19] = 'O';
-			slep(0.5 / (is_big + 1) / variate.data_saver.stime);
+			slep(0.5 / (is_big + 1) / data.gameState.dataSaver.stime);
 		}
 		paint[11][18] = paint[11][20] = paint[11][19] = '~';
 		color[11][19] = "\x1b[1;34m";
 		color[13][19] = fish_color[type];
 		paint[12][19] = 'V';
 		paint[13][19] = 'O';
-		slep(0.5 / (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 / (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[12][19] = ' ';
 		color[12][19] = "";
 		color[14][19] = fish_color[type];
 		paint[13][19] = 'V';
 		paint[14][19] = 'O';
-		slep(0.5 / (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 / (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[13][19] = ' ';
 		color[13][19] = "";
 		paint[14][19] = 'V';
-		slep(0.5 / (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 / (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[14][19] = ' ';
 		color[14][19] = "";
-		slep(0.5 / (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 / (is_big + 1) / data.gameState.dataSaver.stime);
 		paint[8][23] = paint[7][22] = paint[6][21] = paint[5][20] = paint[5][19] = ' ';
 		paint[9][24] = '/';
 		cout << "\x1b[?25h" << flush;
@@ -534,7 +534,7 @@ namespace fishing{
 		ter_big = {0, 0};
 		la = time(0);
 
-		const double hung_speed = (variate.data_saver.hungry < 5 ? 3 : (variate.data_saver.hungry < 10 ? 2 : (variate.data_saver.hungry < 30 ? 1 : variate.data_saver.hungry < 35 ? 0.8 : 0.5)));
+		const double hung_speed = (data.gameState.dataSaver.hungry < 5 ? 3 : (data.gameState.dataSaver.hungry < 10 ? 2 : (data.gameState.dataSaver.hungry < 30 ? 1 : data.gameState.dataSaver.hungry < 35 ? 0.8 : 0.5)));
 		now_status = 0;
 		cout << "\x1b[?25l" << flush;
 		for(int i = 0; i < 15; i++){
@@ -555,30 +555,30 @@ namespace fishing{
 			color[9][25] = color[10][24] = color[10][26] = fish_color[6];
 			variate.fish_man = false;
 		}
-		slep(0.5 * hung_speed / variate.data_saver.stime);
+		slep(0.5 * hung_speed / data.gameState.dataSaver.stime);
 		for(int i = 27; i <= 34; i++){
 			paint[9][i] = ' ';
 		}
 		paint[9][26] = 'V';
 		paint[8][27] = paint[7][28] = paint[6][29] = paint[5][30] = '/';
-		slep(0.5 * hung_speed / variate.data_saver.stime);
+		slep(0.5 * hung_speed / data.gameState.dataSaver.stime);
 		paint[8][27] = paint[7][28] = paint[6][29] = paint[5][30] = ' ';
 		paint[9][26] = paint[8][26] = paint[7][26] = paint[6][26] = paint[5][26] = '|';
-		slep(0.5 * hung_speed / variate.data_saver.stime);
+		slep(0.5 * hung_speed / data.gameState.dataSaver.stime);
 		paint[9][26] = '\\';
 		paint[8][26] = paint[7][26] = paint[6][26] = paint[5][26] = ' ';
 		paint[9][24] = paint[8][24] = paint[7][24] = paint[6][24] = paint[5][24] = '|';
-		slep(0.5 * hung_speed / variate.data_saver.stime);
+		slep(0.5 * hung_speed / data.gameState.dataSaver.stime);
 		paint[8][24] = paint[7][24] = paint[6][24] = paint[5][24] = ' ';
 		paint[9][24] = 'V';
 		paint[8][23] = paint[7][22] = paint[6][21] = paint[5][20] = '\\';
-		slep(0.5 * hung_speed / variate.data_saver.stime);
+		slep(0.5 * hung_speed / data.gameState.dataSaver.stime);
 		paint[5][19] = 'j';
-		slep(0.5 * hung_speed / variate.data_saver.stime);
+		slep(0.5 * hung_speed / data.gameState.dataSaver.stime);
 		for(int i = 6; i <= 10; i++){
 			paint[i - 1][19] = '|';
 			paint[i][19] = 'j';
-			slep(0.5 * hung_speed / variate.data_saver.stime);
+			slep(0.5 * hung_speed / data.gameState.dataSaver.stime);
 		}
 		paint[10][19] = '|';
 		paint[11][19] = 'j';
@@ -595,11 +595,11 @@ namespace fishing{
 		now_status = 2;
 		color[11][0] = fish_color[type];
 		paint[11][0] = 'O';
-		slep(0.5 * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * (is_big + 1) / data.gameState.dataSaver.stime);
 		color[11][1] = fish_color[type];
 		paint[11][0] = '>';
 		paint[11][1] = 'O';
-		slep(0.5 * (is_big + 1) / variate.data_saver.stime);
+		slep(0.5 * (is_big + 1) / data.gameState.dataSaver.stime);
 		for(int i = 2; i <= 19; i++){
 			if(i === 19){
 				now_status = 3;
@@ -609,10 +609,10 @@ namespace fishing{
 			color[11][i] = fish_color[type];
 			paint[11][i - 1] = '>';
 			paint[11][i] = 'O';
-			slep(0.5 * (is_big + 1) / variate.data_saver.stime);
+			slep(0.5 * (is_big + 1) / data.gameState.dataSaver.stime);
 		}
 		cout << "\x1b[?25h" << flush;
-		bool slip = (random(1, 100) <= (variate.data_saver.slip + (weather.first === 5) * 10));
+		bool slip = (random(1, 100) <= (data.gameState.dataSaver.slip + (weather.first === 5) * 10));
 		if(slip){
 			fishingslip(is_big, type);
 		}else{
@@ -623,7 +623,7 @@ namespace fishing{
 		}
 	}
 	inline void fishing_choose(){
-		bool b = (random(1, 100) <= variate.data_saver.bf);
+		bool b = (random(1, 100) <= data.gameState.dataSaver.bf);
 		if(variate.big){
 			b = true;
 			variate.big--;
@@ -647,7 +647,7 @@ namespace fishing{
 	inline void get_gan(){
 		clear();
 		print(fi_getgan);
-		print(fi_nowgan + fish_name[variate.data_saver.gan] + fi_gan);
+		print(fi_nowgan + fish_name[data.gameState.dataSaver.gan] + fi_gan);
 		bool b[8] = {};
 		string s = "";
 		for(int i = 0; i <= 6; i++){
@@ -684,17 +684,17 @@ namespace fishing{
 		if(!fish[d].empty()){
 			fish[d].pop_back();
 		}
-		variate.data_saver.gan = d;
+		data.gameState.dataSaver.gan = d;
 	}
 	void aqua(){
 		{
 			int cnt = 0;
 			for(int i = 0; i <= 6; i++){
-				cnt += variate.data_saver.aqfish_cnt[i];
+				cnt += data.gameState.dataSaver.aqfish_cnt[i];
 			}
 			for(int i = 6; i >= 1 && cnt > 0; i--){
-				if(variate.data_saver.aqfish_cnt[i]){
-					variate.data_saver.aqfish_cnt[i]--;
+				if(data.gameState.dataSaver.aqfish_cnt[i]){
+					data.gameState.dataSaver.aqfish_cnt[i]--;
 				}
 			}
 		}
@@ -704,18 +704,18 @@ namespace fishing{
 		print(fi_aexit);
 		variate.aqnow = time(0);
 		for(int i = 0; i <= 6; i++){
-			cout << fishing.fish_color[i] << fishing.fish_name[i] << fi_f << variate.data_saver.aqfish_cnt[i] << fi_azhi << endl;
+			cout << fishing.fish_color[i] << fishing.fish_name[i] << fi_f << data.gameState.dataSaver.aqfish_cnt[i] << fi_azhi << endl;
 		}
 		while(getch() != '1');
 		int cnt = 0;
 		for(int i = 0; i <= 6; i++){
-			cnt += aqua_get[i] * variate.data_saver.aqfish_cnt[i];
+			cnt += aqua_get[i] * data.gameState.dataSaver.aqfish_cnt[i];
 		}
 		variate.aqother += time(0) - variate.aqnow;
 		variate.aqnow = 0;
 		cnt *= variate.aqother / 60;
 		variate.aqother %= 60;
-		variate.data_saver.money += cnt;
+		data.gameState.dataSaver.money += cnt;
 		print(fi_aget + to_string(cnt) + fi_aget2);
 	}
 	void make_food(){
@@ -747,13 +747,13 @@ namespace fishing{
 				if(fish[i].size()){
 					cout << fi_chi << fish[i].size() << fi_azhi2 << endl;
 				}
-				if(variate.data_saver.fish[i][0]){
-					cout << fi_raw << variate.data_saver.fish[i][0] << fi_azhi2 << endl;
+				if(data.gameState.dataSaver.fish[i][0]){
+					cout << fi_raw << data.gameState.dataSaver.fish[i][0] << fi_azhi2 << endl;
 				}
-				if(variate.data_saver.fish[i][1]){
-					cout << fi_roast << variate.data_saver.fish[i][1] << fi_azhi2 << endl;
+				if(data.gameState.dataSaver.fish[i][1]){
+					cout << fi_roast << data.gameState.dataSaver.fish[i][1] << fi_azhi2 << endl;
 				}
-				if(fish[i].empty() && !variate.data_saver.fish[i][0] && !variate.data_saver.fish[i][1]){
+				if(fish[i].empty() && !data.gameState.dataSaver.fish[i][0] && !data.gameState.dataSaver.fish[i][1]){
 					cout << fi_no2 << endl;
 				}
 			}
@@ -777,7 +777,7 @@ namespace fishing{
 				continue;
 			}
 			fish[d].pop_back();
-			variate.data_saver.fish[d][0]++;
+			data.gameState.dataSaver.fish[d][0]++;
 		}
 	}
 	void roast_food(){
@@ -787,7 +787,7 @@ namespace fishing{
 		bool b[8] = {};
 		string s = "";
 		for(int i = 0; i <= 6; i++){
-			b[i] = variate.data_saver.fish[i][0];
+			b[i] = data.gameState.dataSaver.fish[i][0];
 			if(b[i]){
 				s += to_string(i);
 				s += ". ";
@@ -808,13 +808,13 @@ namespace fishing{
 			if(fish[i].size()){
 				cout << fi_chi << fish[i].size() << fi_azhi2 << endl;
 			}
-			if(variate.data_saver.fish[i][0]){
-				cout << fi_raw << variate.data_saver.fish[i][0] << fi_azhi2 << endl;
+			if(data.gameState.dataSaver.fish[i][0]){
+				cout << fi_raw << data.gameState.dataSaver.fish[i][0] << fi_azhi2 << endl;
 			}
-			if(variate.data_saver.fish[i][1]){
-				cout << fi_roast << variate.data_saver.fish[i][1] << fi_azhi2 << endl;
+			if(data.gameState.dataSaver.fish[i][1]){
+				cout << fi_roast << data.gameState.dataSaver.fish[i][1] << fi_azhi2 << endl;
 			}
-			if(fish[i].empty() && !variate.data_saver.fish[i][0] && !variate.data_saver.fish[i][1]){
+			if(fish[i].empty() && !data.gameState.dataSaver.fish[i][0] && !data.gameState.dataSaver.fish[i][1]){
 				cout << fi_no2 << endl;
 			}
 		}
@@ -835,10 +835,10 @@ namespace fishing{
 			sleep(0.5);
 			return;
 		}
-		if(!variate.data_saver.fish[d][0]){
+		if(!data.gameState.dataSaver.fish[d][0]){
 			return;
 		}
-		const int l = 0, r = variate.data_saver.fish[d][0];
+		const int l = 0, r = data.gameState.dataSaver.fish[d][0];
 		int a = 0;
 		clear();
 		cout << fi_romain << endl << fi_rom2 << fish_color[d] << fish_name[d] + fi_f << "\x1b[m" << endl;
@@ -856,14 +856,14 @@ namespace fishing{
 					a = r;
 				}
 			}else if(c === '\r'){
-				if(a > variate.data_saver.fish[d][0] || a < 0 || !variate.data_saver.roast){
+				if(a > data.gameState.dataSaver.fish[d][0] || a < 0 || !data.gameState.dataSaver.roast){
 					clear();
 					return;
 				}
-				variate.data_saver.fish[d][0] -= a;
-				variate.data_saver.fish[d][1] += a;
+				data.gameState.dataSaver.fish[d][0] -= a;
+				data.gameState.dataSaver.fish[d][1] += a;
 				clear();
-				int time = (a + variate.data_saver.roast - 1) / variate.data_saver.roast;
+				int time = (a + data.gameState.dataSaver.roast - 1) / data.gameState.dataSaver.roast;
 				for(int i = 0; i < time; i++){
 					for(int j = 0; j < 20; j++){
 						clear();
@@ -882,7 +882,7 @@ namespace fishing{
 							cout << "\x1b[31;1m=\x1b[m";
 						}
 						cout << endl;
-						cout << i * variate.data_saver.roast << "/" << a << fi_rod << endl;
+						cout << i * data.gameState.dataSaver.roast << "/" << a << fi_rod << endl;
 						sleep(0.5);
 					}
 				}
@@ -909,12 +909,12 @@ namespace fishing{
 			clear();
 			print(fi_em);
 			printnl(fi_nowhun);
-			cout << (variate.data_saver.hungry < 10 ? "\x1b[31;1m" : (variate.data_saver.hungry < 30 ? "" : variate.data_saver.hungry < 35 ? "\x1b[32m" : "\x1b[32;1m")) << variate.data_saver.hungry << "\x1b[m" << endl;
+			cout << (data.gameState.dataSaver.hungry < 10 ? "\x1b[31;1m" : (data.gameState.dataSaver.hungry < 30 ? "" : data.gameState.dataSaver.hungry < 35 ? "\x1b[32m" : "\x1b[32;1m")) << data.gameState.dataSaver.hungry << "\x1b[m" << endl;
 			print(fi_mfn);
 			bool b[8] = {};
 			string s = "";
 			for(int i = 0; i <= 6; i++){
-				b[i] = variate.data_saver.fish[i][0];
+				b[i] = data.gameState.dataSaver.fish[i][0];
 				if(b[i]){
 					s += to_string(i);
 					s += ". ";
@@ -932,10 +932,10 @@ namespace fishing{
 			s += fi_exit;
 			for(int i = 1; i <= 6; i++){
 				cout << fish_color[i] << fish_name[i] + fi_f << "\x1b[m" << endl;
-				if(variate.data_saver.fish[i][0]){
-					cout << fi_raw << variate.data_saver.fish[i][0] << fi_ezhi << i + 3 << endl;
+				if(data.gameState.dataSaver.fish[i][0]){
+					cout << fi_raw << data.gameState.dataSaver.fish[i][0] << fi_ezhi << i + 3 << endl;
 				}
-				if(!variate.data_saver.fish[i][0] && !variate.data_saver.fish[i][1]){
+				if(!data.gameState.dataSaver.fish[i][0] && !data.gameState.dataSaver.fish[i][1]){
 					cout << fi_no2 << endl;
 				}
 			}
@@ -956,13 +956,13 @@ namespace fishing{
 				sleep(0.5);
 				return;
 			}
-			if(variate.data_saver.fish[d][0] < 1){
+			if(data.gameState.dataSaver.fish[d][0] < 1){
 				sleep(0.5);
 				return;
 			}
-			variate.data_saver.fish[d][0]--;
-			variate.data_saver.hungry += d + 3;
-			variate.data_saver.hungry = min(variate.data_saver.hungry, 40);
+			data.gameState.dataSaver.fish[d][0]--;
+			data.gameState.dataSaver.hungry += d + 3;
+			data.gameState.dataSaver.hungry = min(data.gameState.dataSaver.hungry, 40);
 			sleep(0.5);
 		}
 	}
@@ -971,12 +971,12 @@ namespace fishing{
 			clear();
 			print(fi_eroast);
 			printnl(fi_nowhun);
-			cout << (variate.data_saver.hungry < 10 ? "\x1b[31;1m" : (variate.data_saver.hungry < 30 ? "" : variate.data_saver.hungry < 35 ? "\x1b[32m" : "\x1b[32;1m")) << variate.data_saver.hungry << "\x1b[m" << endl;
+			cout << (data.gameState.dataSaver.hungry < 10 ? "\x1b[31;1m" : (data.gameState.dataSaver.hungry < 30 ? "" : data.gameState.dataSaver.hungry < 35 ? "\x1b[32m" : "\x1b[32;1m")) << data.gameState.dataSaver.hungry << "\x1b[m" << endl;
 			print(fi_mfn);
 			bool b[8] = {};
 			string s = "";
 			for(int i = 0; i <= 6; i++){
-				b[i] = variate.data_saver.fish[i][1];
+				b[i] = data.gameState.dataSaver.fish[i][1];
 				if(b[i]){
 					s += to_string(i);
 					s += ". ";
@@ -994,10 +994,10 @@ namespace fishing{
 			s += fi_exit;
 			for(int i = 1; i <= 6; i++){
 				cout << fish_color[i] << fish_name[i] + fi_f << "\x1b[m" << endl;
-				if(variate.data_saver.fish[i][1]){
-					cout << fi_roast << variate.data_saver.fish[i][1] << fi_ezhi << i + 7 << endl;
+				if(data.gameState.dataSaver.fish[i][1]){
+					cout << fi_roast << data.gameState.dataSaver.fish[i][1] << fi_ezhi << i + 7 << endl;
 				}
-				if(!variate.data_saver.fish[i][0] && !variate.data_saver.fish[i][1]){
+				if(!data.gameState.dataSaver.fish[i][0] && !data.gameState.dataSaver.fish[i][1]){
 					cout << fi_no2 << endl;
 				}
 			}
@@ -1018,12 +1018,12 @@ namespace fishing{
 				sleep(0.5);
 				return;
 			}
-			if(variate.data_saver.fish[d][1] < 1){
+			if(data.gameState.dataSaver.fish[d][1] < 1){
 				return;
 			}
-			variate.data_saver.fish[d][1]--;
-			variate.data_saver.hungry += d + 7;
-			variate.data_saver.hungry = min(variate.data_saver.hungry, 40);
+			data.gameState.dataSaver.fish[d][1]--;
+			data.gameState.dataSaver.hungry += d + 7;
+			data.gameState.dataSaver.hungry = min(data.gameState.dataSaver.hungry, 40);
 			sleep(0.5);
 		}
 	}
@@ -1032,20 +1032,20 @@ namespace fishing{
 			clear();
 			print(fi_nrm);
 			printnl(fi_nowhun);
-			cout << (variate.data_saver.hungry < 10 ? "\x1b[31;1m" : (variate.data_saver.hungry < 30 ? "" : variate.data_saver.hungry < 35 ? "\x1b[32m" : "\x1b[32;1m")) << variate.data_saver.hungry << "\x1b[m" << endl;
+			cout << (data.gameState.dataSaver.hungry < 10 ? "\x1b[31;1m" : (data.gameState.dataSaver.hungry < 30 ? "" : data.gameState.dataSaver.hungry < 35 ? "\x1b[32m" : "\x1b[32;1m")) << data.gameState.dataSaver.hungry << "\x1b[m" << endl;
 			print(fi_mfn);
 			for(int i = 1; i <= 6; i++){
 				cout << fish_color[i] << fish_name[i] + fi_f << "\x1b[m" << endl;
 				if(fish[i].size()){
 					cout << fi_chi << fish[i].size() << fi_azhi2 << endl;
 				}
-				if(variate.data_saver.fish[i][0]){
-					cout << fi_raw << variate.data_saver.fish[i][0] << fi_azhi2 << endl;
+				if(data.gameState.dataSaver.fish[i][0]){
+					cout << fi_raw << data.gameState.dataSaver.fish[i][0] << fi_azhi2 << endl;
 				}
-				if(variate.data_saver.fish[i][1]){
-					cout << fi_roast << variate.data_saver.fish[i][1] << fi_azhi2 << endl;
+				if(data.gameState.dataSaver.fish[i][1]){
+					cout << fi_roast << data.gameState.dataSaver.fish[i][1] << fi_azhi2 << endl;
 				}
-				if(fish[i].empty() && !variate.data_saver.fish[i][0] && !variate.data_saver.fish[i][1]){
+				if(fish[i].empty() && !data.gameState.dataSaver.fish[i][0] && !data.gameState.dataSaver.fish[i][1]){
 					cout << fi_no2 << endl;
 				}
 			}
@@ -1065,7 +1065,7 @@ namespace fishing{
 		}
 	}
 	void roast(){
-		if(!variate.data_saver.roast){
+		if(!data.gameState.dataSaver.roast){
 			no_roast();
 			return;
 		}
@@ -1073,20 +1073,20 @@ namespace fishing{
 			clear();
 			print(fi_rm);
 			printnl(fi_nowhun);
-			cout << (variate.data_saver.hungry < 10 ? "\x1b[31;1m" : (variate.data_saver.hungry < 30 ? "" : variate.data_saver.hungry < 35 ? "\x1b[32m" : "\x1b[32;1m")) << variate.data_saver.hungry << "\x1b[m" << endl;
+			cout << (data.gameState.dataSaver.hungry < 10 ? "\x1b[31;1m" : (data.gameState.dataSaver.hungry < 30 ? "" : data.gameState.dataSaver.hungry < 35 ? "\x1b[32m" : "\x1b[32;1m")) << data.gameState.dataSaver.hungry << "\x1b[m" << endl;
 			print(fi_mfn);
 			for(int i = 1; i <= 6; i++){
 				cout << fish_color[i] << fish_name[i] + fi_f << "\x1b[m" << endl;
 				if(fish[i].size()){
 					cout << fi_chi << fish[i].size() << fi_azhi2 << endl;
 				}
-				if(variate.data_saver.fish[i][0]){
-					cout << fi_raw << variate.data_saver.fish[i][0] << fi_azhi2 << endl;
+				if(data.gameState.dataSaver.fish[i][0]){
+					cout << fi_raw << data.gameState.dataSaver.fish[i][0] << fi_azhi2 << endl;
 				}
-				if(variate.data_saver.fish[i][1]){
-					cout << fi_roast << variate.data_saver.fish[i][1] << fi_azhi2 << endl;
+				if(data.gameState.dataSaver.fish[i][1]){
+					cout << fi_roast << data.gameState.dataSaver.fish[i][1] << fi_azhi2 << endl;
 				}
-				if(fish[i].empty() && !variate.data_saver.fish[i][0] && !variate.data_saver.fish[i][1]){
+				if(fish[i].empty() && !data.gameState.dataSaver.fish[i][0] && !data.gameState.dataSaver.fish[i][1]){
 					cout << fi_no2 << endl;
 				}
 			}
@@ -1123,17 +1123,17 @@ namespace fishing{
 					while(!fish[i].empty()){
 						fish[i].pop_back();
 					}
-					variate.data_saver.aqfish_cnt[i] = 0;
+					data.gameState.dataSaver.aqfish_cnt[i] = 0;
 				}
 				checkpoint.savechpnp(variate.name);
 				while(getch() === '1'){
-					variate.data_saver.money -= 1000;
+					data.gameState.dataSaver.money -= 1000;
 				}
 			}
 			print(fi_sum3);
 			printnl(fi_nowhun);
-			cout << (variate.data_saver.hungry < 10 ? "\x1b[31;1m" : (variate.data_saver.hungry < 30 ? "" : variate.data_saver.hungry < 35 ? "\x1b[32m" : "\x1b[32;1m")) << variate.data_saver.hungry << "\x1b[m" << endl;
-			print(fi_sum4 + fish_name[variate.data_saver.gan] + fi_gan);
+			cout << (data.gameState.dataSaver.hungry < 10 ? "\x1b[31;1m" : (data.gameState.dataSaver.hungry < 30 ? "" : data.gameState.dataSaver.hungry < 35 ? "\x1b[32m" : "\x1b[32;1m")) << data.gameState.dataSaver.hungry << "\x1b[m" << endl;
+			print(fi_sum4 + fish_name[data.gameState.dataSaver.gan] + fi_gan);
 			print(fi_sum5 + to_string(dirty));
 			for(int i = 0; i <= 6; i++){
 				cout << fish_color[i] << fish_name[i] + fi_f << "\x1b[m" << endl;
@@ -1172,7 +1172,7 @@ namespace fishing{
 						}
 					}
 					fishing_choose();
-					variate.data_saver.hungry--;
+					data.gameState.dataSaver.hungry--;
 					break;
 				}else if(c === '2'){
 					clear();
@@ -1181,10 +1181,10 @@ namespace fishing{
 						break;
 					}
 					while(true){
-						if(variate.data_saver.cleaning_ball){
+						if(data.gameState.dataSaver.cleaning_ball){
 							print(fi_cl);
-							print(fi_iscl + to_string(variate.data_saver.cleaning_ball));
-							print(fi_clbcnt + to_string(variate.data_saver.cleaning_ball));
+							print(fi_iscl + to_string(data.gameState.dataSaver.cleaning_ball));
+							print(fi_clbcnt + to_string(data.gameState.dataSaver.cleaning_ball));
 							char c = 0;
 							while(true){
 								c = getch();
@@ -1193,8 +1193,8 @@ namespace fishing{
 								}
 							}
 							if(c === '1'){
-								variate.data_saver.cleaning_ball--;
-								dirty -= variate.data_saver.cleaning_sub;
+								data.gameState.dataSaver.cleaning_ball--;
+								dirty -= data.gameState.dataSaver.cleaning_sub;
 								if(dirty < 0){
 									dirty = 0;
 								}
@@ -1203,9 +1203,9 @@ namespace fishing{
 							}
 						}else{
 							print(fi_clm1);
-							print(fi_cldt + to_string(variate.data_saver.cleaning_ball));
+							print(fi_cldt + to_string(data.gameState.dataSaver.cleaning_ball));
 							print(fi_clji);
-							print(fi_clbuy + to_string(variate.data_saver.money));
+							print(fi_clbuy + to_string(data.gameState.dataSaver.money));
 							char c = 0;
 							while(true){
 								c = getch();
@@ -1214,12 +1214,12 @@ namespace fishing{
 								}
 							}
 							if(c === '1'){
-								if(variate.data_saver.money < 20){
+								if(data.gameState.dataSaver.money < 20){
 									cout << fi_mnng << endl;
 									break;
 								}else{
-									variate.data_saver.money -= 20;
-									dirty -= variate.data_saver.cleaning_sub;
+									data.gameState.dataSaver.money -= 20;
+									dirty -= data.gameState.dataSaver.cleaning_sub;
 									if(dirty < 0){
 										dirty = 0;
 									}
@@ -1239,7 +1239,7 @@ namespace fishing{
 					sleep(1);
 					break;
 				}else if(c === '4'){
-					if(variate.data_saver.aqcnt){
+					if(data.gameState.dataSaver.aqcnt){
 						aqua();
 						sleep(1);
 					}else{
@@ -1253,7 +1253,7 @@ namespace fishing{
 				}else if(c === '6'){
 					for(int i = 0; i <= 6; i++){
 						for(int j = 0; j < fish[i].size(); j++){
-							variate.data_saver.money += (int)(gr() * (1 - 0.02 * dirty) * fresh(fish[i][j]));
+							data.gameState.dataSaver.money += (int)(gr() * (1 - 0.02 * dirty) * fresh(fish[i][j]));
 						}
 						while(!fish[i].empty()){
 							fish[i].pop_back();
@@ -1264,7 +1264,7 @@ namespace fishing{
 				}else if(c === '7'){
 					for(int i = 0; i <= 6; i++){
 						for(int j = 0; j < fish[i].size(); j++){
-							variate.data_saver.money += (int)(gr() * (1 - 0.02 * dirty) * fresh(fish[i][j]));
+							data.gameState.dataSaver.money += (int)(gr() * (1 - 0.02 * dirty) * fresh(fish[i][j]));
 						}
 						while(!fish[i].empty()){
 							fish[i].pop_back();

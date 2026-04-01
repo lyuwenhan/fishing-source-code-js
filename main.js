@@ -16,7 +16,6 @@ export async function start(write, loadGame, saveGame, hasSave, giveOnInput, giv
 	for (let text of lang.current.main.story) {
 		await functions.printa(text)
 	}
-	await functions.clear();
 	if (await checkpoint.login()) {
 		await functions.sleep(0.5);
 		await functions.choose()

@@ -63,19 +63,19 @@ async function show() {
 				await functions.write("O")
 			} else {
 				if (map[i][j] === ".") {
-					await functions.write("[34;1m#[m")
+					await functions.write("\x1b[34;1m#\x1b[m")
 				} else if (map[i][j] === "*") {
-					await functions.write("[31;1m*[m")
+					await functions.write("\x1b[31;1m*\x1b[m")
 				} else if (map[i][j] === "Z") {
-					await functions.write("[32;1mZ[m")
+					await functions.write("\x1b[32;1mZ\x1b[m")
 				} else if (map[i][j] === "^") {
-					await functions.write("[33;1m^[m")
+					await functions.write("\x1b[33;1m^\x1b[m")
 				} else if (map[i][j] === ">") {
-					await functions.write("[33;1m>[m")
+					await functions.write("\x1b[33;1m>\x1b[m")
 				} else if (map[i][j] === "<") {
-					await functions.write("[33;1m<[m")
+					await functions.write("\x1b[33;1m<\x1b[m")
 				} else if (isFinishCell(j, i + 1)) {
-					await functions.write("[33;1m" + map[i][j] + "[m")
+					await functions.write("\x1b[33;1m" + map[i][j] + "\x1b[m")
 				} else {
 					await functions.write(map[i][j])
 				}

@@ -4,6 +4,7 @@ import * as functions from "./functions.js";
 import * as checkpoint from "./checkpoint.js";
 import shop from "./shop.js";
 import parkour from "./parkour.js";
+import lottery from "./lottery.js";
 let started = false;
 export async function start(write, loadGame, saveGame, hasSave, giveOnInput, giveSetConsoleSize, giveSetLanguage) {
 	if (started) {
@@ -38,7 +39,7 @@ export async function start(write, loadGame, saveGame, hasSave, giveOnInput, giv
 				await functions.setTextSpeed();
 				break
 			} else if (type === "4") {
-				await spin();
+				await lottery();
 				break
 			} else if (type === "5") {
 				if (data.gameState.dataSaver.challengeLevel === 0) {

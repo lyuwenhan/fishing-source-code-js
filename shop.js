@@ -212,8 +212,6 @@ async function shop0() {
 	}
 }
 async function shop1() {
-	await functions.clear();
-	await functions.printa(lang.current.shop.superShopWelcome);
 	while (true) {
 		await functions.clear();
 		await functions.print(lang.current.shop.superShopMainMenu);

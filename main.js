@@ -2,6 +2,7 @@ import lang from "./lang.js";
 import * as data from "./data.js";
 import * as functions from "./functions.js";
 import * as checkpoint from "./checkpoint.js";
+import shop from "./shop.js";
 import parkour from "./parkour.js";
 let started = false;
 export async function start(write, loadGame, saveGame, hasSave, giveOnInput, giveSetConsoleSize, giveSetLanguage) {

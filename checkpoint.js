@@ -1,9 +1,7 @@
 import lang from "./lang.js";
 import * as data from "./data.js";
 import * as functions from "./functions.js";
-import {
-	validateDataSaver
-} from "./dataSaverValidator.js";
+import validateDataSaver from "./dataSaverValidator.js";
 
 function checkName(username) {
 	return /^[a-zA-Z0-9_-]+$/.test(username)

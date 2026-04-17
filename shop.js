@@ -13,7 +13,7 @@ async function showResult(text) {
 async function shop0() {
 	while (true) {
 		await functions.clear();
-		await functions.print(lang.current.shop.mainMenu);
+		await functions.print(lang.current.shop.shopMainMenu);
 		await functions.print(lang.current.shop.hookSpeedTitle);
 		if (data.gameState.dataSaver.catchSpeedLevel === data.constant.maxCatchSpeedLevel) {
 			await functions.print(lang.current.shop.levelMax)

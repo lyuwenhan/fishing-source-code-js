@@ -1,6 +1,9 @@
 import lang from "./lang.js";
 import * as data from "./data.js";
 import * as functions from "./functions.js";
+import {
+	validateDataSaver
+} from "./dataSaverValidator.js";
 
 function checkName(username) {
 	return /^[a-zA-Z0-9_-]+$/.test(username)
@@ -11,11 +14,13 @@ export async function loadGame() {
 		data.gameState.dataSaver = {
 			...data.getData(),
 			...loadState.data
-		}
+		};
+		validateDataSaver(data.gameState.dataSaver)
 	}
 	return loadState
 }
 export async function saveGame() {
+	validateDataSaver(data.gameState.dataSaver);
 	return functions.requiredFunctions.saveGame(data.gameState.username, data.gameState.password, data.gameState.dataSaver)
 }
 export async function login() {

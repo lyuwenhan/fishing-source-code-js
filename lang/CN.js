@@ -25,7 +25,7 @@ export default {
 	},
 	shop: {
 		max_level_reached: "等级已满",
-		mainMenu: "1.升级上钩速度, 2.升级钓鱼收益, 3.脱钩概率, 4.购买清洁剂, 5.升级清洁剂, 6.升级水族馆容量, 7.购买烤箱, 8.返回。",
+		shopMainMenu: "1.升级上钩速度, 2.升级钓鱼收益, 3.脱钩概率, 4.购买清洁剂, 5.升级清洁剂, 6.升级水族馆容量, 7.购买烤箱, 8.返回。",
 		levelMax: "    等级已满",
 		upgradeCostPrefix: "    升级花费: $",
 		currentGoldPrefix: ", 当前金币数量: $",

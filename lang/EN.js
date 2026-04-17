@@ -25,7 +25,7 @@ export default {
 	},
 	shop: {
 		max_level_reached: "Max level reached.",
-		mainMenu: "1. Upgrade hook speed, 2. Upgrade fishing income, 3. Reduce hook-off chance, 4. Buy cleaner, 5. Upgrade cleaner, 6. Upgrade aquarium capacity, 7. Buy oven, 8. Back.",
+		shopMainMenu: "1. Upgrade hook speed, 2. Upgrade fishing income, 3. Reduce hook-off chance, 4. Buy cleaner, 5. Upgrade cleaner, 6. Upgrade aquarium capacity, 7. Buy oven, 8. Back.",
 		levelMax: "    Max level reached",
 		upgradeCostPrefix: "    Upgrade cost: $",
 		currentGoldPrefix: ", Current gold: $",

@@ -28,8 +28,8 @@ export async function login() {
 		await functions.clear();
 		await functions.print(functions.capitalize(lang.current.checkpoint.login));
 		await functions.printnl(functions.capitalize(lang.current.checkpoint.username) + ": ");
-		if (data.settings.forceUsername) {
-			username = data.settings.forceUsername;
+		if (data.gameState.settings.forceUsername) {
+			username = data.gameState.settings.forceUsername;
 			await functions.write(username + "\n")
 		} else {
 			username = await functions.getline(1);
@@ -47,7 +47,7 @@ export async function login() {
 		}
 		const isNew = userState.code === 2;
 		await functions.printnl(functions.capitalize(lang.current.checkpoint.password) + ": ");
-		if (!data.settings.forceBlancPassword) {
+		if (!data.gameState.settings.forceBlancPassword) {
 			password = await functions.getline(2);
 			if (isNew) {
 				await functions.printnl(functions.capitalize(lang.current.checkpoint.confirmPassword) + ": ");

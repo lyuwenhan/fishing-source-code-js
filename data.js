@@ -58,13 +58,13 @@ export const getGameState = () => ({
 	aqnow: 0,
 	aqother: 0,
 	password: "",
-	dataSaver: getData()
+	dataSaver: getData(),
+	settings: {
+		developerMode: false,
+		skipStory: false,
+		forceUsername: "",
+		forceBlancPassword: false,
+		forceInstantOutput: false
+	}
 });
-export const settings = {
-	developerMode: false,
-	skipStory: false,
-	forceUsername: "",
-	forceBlancPassword: false,
-	forceInstantOutput: false
-};
 export const gameState = getGameState();

@@ -9,7 +9,7 @@ import adventure from "./adventure.js";
 export const onInput = functions.onInput;
 export const setConsoleSize = functions.setConsoleSize;
 export const languages = functions.deepCopy(lang);
-export const settings = data.settings;
+export const settings = data.gameState.settings;
 let started = false;
 export async function start(write, loadGame, saveGame, hasSave) {
 	if (settings.forceInstantOutput) {

@@ -24,32 +24,39 @@ export async function saveGame() {
 export async function login() {
 	while (true) {
 		await functions.clear();
-		let username, password;
+		let username, password = "";
 		await functions.clear();
 		await functions.print(functions.capitalize(lang.current.checkpoint.login));
 		await functions.printnl(functions.capitalize(lang.current.checkpoint.username) + ": ");
-		username = await functions.getline(1);
-		if (!checkName(username)) {
-			await functions.print(lang.current.checkpoint.invalid_username);
-			await functions.sleep(1);
-			continue
+		if (data.settings.forceUsername) {
+			username = data.settings.forceUsername;
+			await functions.write(username + "\n")
+		} else {
+			username = await functions.getline(1);
+			if (!checkName(username)) {
+				await functions.print(lang.current.checkpoint.invalidUsername);
+				await functions.sleep(1);
+				continue
+			}
 		}
 		const userState = await functions.requiredFunctions.hasSave(username);
 		if (!userState?.code) {
-			await functions.print(functions.capitalize(lang.current.checkpoint.api_error));
+			await functions.print(functions.capitalize(lang.current.checkpoint.apiError));
 			await functions.sleep(1);
 			continue
 		}
 		const isNew = userState.code === 2;
 		await functions.printnl(functions.capitalize(lang.current.checkpoint.password) + ": ");
-		password = await functions.getline(2);
-		if (isNew) {
-			await functions.printnl(functions.capitalize(lang.current.checkpoint.confirm_password) + ": ");
-			let newPassword = await functions.getline(2);
-			if (newPassword !== password) {
-				await functions.print(lang.current.checkpoint.password_not_match);
-				await functions.sleep(1);
-				continue
+		if (!data.settings.forceBlancPassword) {
+			password = await functions.getline(2);
+			if (isNew) {
+				await functions.printnl(functions.capitalize(lang.current.checkpoint.confirmPassword) + ": ");
+				let newPassword = await functions.getline(2);
+				if (newPassword !== password) {
+					await functions.print(lang.current.checkpoint.passwordNotMatch);
+					await functions.sleep(1);
+					continue
+				}
 			}
 		}
 		data.gameState.username = username;
@@ -57,19 +64,19 @@ export async function login() {
 		if (!isNew) {
 			const loadState = await loadGame();
 			if (loadState?.code !== 1) {
-				await functions.print(lang.current.checkpoint.api_error);
+				await functions.print(lang.current.checkpoint.apiError);
 				await functions.sleep(1);
 				continue
 			}
 		}
 		const saveState = await saveGame();
 		if (!saveState?.code) {
-			await functions.print(lang.current.checkpoint.api_error);
+			await functions.print(lang.current.checkpoint.apiError);
 			await functions.sleep(1);
 			continue
 		}
 		if (saveState.code === 2) {
-			await functions.print(lang.current.checkpoint.password_error);
+			await functions.print(lang.current.checkpoint.passwordError);
 			await functions.sleep(1);
 			continue
 		}

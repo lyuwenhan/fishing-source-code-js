@@ -165,7 +165,7 @@ export async function printnl(text, time = .02) {
 		} else {
 			for (const char of text) {
 				await write(char);
-				await sleep(time / (data.gameState.dataSaver.textSpeed + 1) / lang.current.functions.output_speed)
+				await sleep(time / (data.gameState.dataSaver.textSpeed + 1) / lang.current.functions.outputSpeed)
 			}
 		}
 	} finally {
@@ -177,7 +177,7 @@ export async function print(text, time = .02) {
 	await write("\n")
 }
 export async function printa(text = "", time = .02) {
-	await print(text + (text ? "    " : "") + "(" + capitalize(lang.current.functions.press_enter_to_continue) + ")", time);
+	await print(text + (text ? "    " : "") + "(" + capitalize(lang.current.functions.pressEnterToContinue) + ")", time);
 	while (await getch() !== "\r");
 }
 export async function printYn(text = "", time = .02) {
@@ -200,8 +200,8 @@ export function random(l, r) {
 }
 export async function choose() {
 	await clear();
-	await print(lang.current.functions.choose_speed);
-	await print(listToChoice(lang.current.functions.speed_name));
+	await print(lang.current.functions.chooseSpeed);
+	await print(listToChoice(lang.current.functions.speedName));
 	let c;
 	do {
 		c = await getch()
@@ -239,8 +239,8 @@ export async function choose() {
 }
 export async function setTextSpeed() {
 	await clear();
-	await print(lang.current.functions.choose_speed);
-	await print(listToChoice(lang.current.functions.speed_name, lang.current.functions.exit));
+	await print(lang.current.functions.chooseSpeed);
+	await print(listToChoice(lang.current.functions.speedName, lang.current.functions.exit));
 	let c;
 	do {
 		c = Number(await getch())
@@ -248,4 +248,44 @@ export async function setTextSpeed() {
 	if (c <= 3) {
 		data.gameState.dataSaver.textSpeed = c - 1
 	}
+}
+export function isPlainObject(value) {
+	if (value === null || typeof value !== "object") {
+		return false
+	}
+	const proto = Object.getPrototypeOf(value);
+	return proto === Object.prototype || proto === null
+}
+export function clamp(value, min, max, fallback = min) {
+	const numberValue = Number(value);
+	if (Number.isNaN(numberValue)) {
+		return fallback
+	}
+	return Math.min(max, Math.max(min, numberValue))
+}
+export function clampInt(value, min, max, fallback = min) {
+	const numberValue = Number(value);
+	if (Number.isNaN(numberValue)) {
+		return fallback
+	}
+	return Math.min(max, Math.max(min, Math.trunc(numberValue)))
+}
+export function deepFreeze(value, seen = new WeakSet) {
+	if (value === null || typeof value !== "object" && typeof value !== "function") {
+		return value
+	}
+	if (!Object.isExtensible(value) || seen.has(value)) {
+		return value
+	}
+	seen.add(value);
+	for (const key of Reflect.ownKeys(value)) {
+		const descriptor = Object.getOwnPropertyDescriptor(value, key);
+		if (!descriptor) {
+			continue
+		}
+		if ("value" in descriptor) {
+			deepFreeze(descriptor.value, seen)
+		}
+	}
+	return Object.freeze(value)
 }

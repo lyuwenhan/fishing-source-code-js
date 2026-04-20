@@ -6,9 +6,11 @@ import shop from "./shop.js";
 import parkour from "./parkour.js";
 import lottery from "./lottery.js";
 import adventure from "./adventure.js";
+// import fishing from "./fishing.js";
 export const onInput = functions.onInput;
 export const setConsoleSize = functions.setConsoleSize;
 export const languages = functions.deepCopy(lang);
+export const settings = data.settings;
 let started = false;
 export async function start(write, loadGame, saveGame, hasSave) {
 	if (started) {
@@ -17,8 +19,10 @@ export async function start(write, loadGame, saveGame, hasSave) {
 	started = true;
 	functions.setFunctions(write, loadGame, saveGame, hasSave);
 	await functions.clear();
-	for (let text of lang.current.main.story) {
-		await functions.printa(text)
+	if (!settings.skipStory) {
+		for (let text of lang.current.main.story) {
+			await functions.printa(text)
+		}
 	}
 	if (await checkpoint.login()) {
 		await functions.sleep(.5);
@@ -27,7 +31,7 @@ export async function start(write, loadGame, saveGame, hasSave) {
 	await functions.sleep(.5);
 	while (true) {
 		await functions.clear();
-		await functions.print(functions.listToChoice(lang.current.main.main_menu));
+		await functions.print(functions.listToChoice(lang.current.main.mainMenu));
 		while (true) {
 			let type = await functions.getch();
 			if (type === "1") {
@@ -49,7 +53,7 @@ export async function start(write, loadGame, saveGame, hasSave) {
 					await adventure()
 				} else {
 					await functions.clear();
-					await functions.printa(lang.current.main.challenge_completed)
+					await functions.printa(lang.current.main.challengeCompleted)
 				}
 				break
 			} else if (type === "6") {
@@ -60,11 +64,11 @@ export async function start(write, loadGame, saveGame, hasSave) {
 		}
 		const saveState = await checkpoint.saveGame();
 		if (!saveState?.code) {
-			await functions.printa(lang.current.checkpoint.api_error);
+			await functions.printa(lang.current.checkpoint.apiError);
 			continue
 		}
 		if (saveState.code === 2) {
-			await functions.printa(lang.current.checkpoint.password_error);
+			await functions.printa(lang.current.checkpoint.passwordError);
 			continue
 		}
 		await functions.sleep(.5)

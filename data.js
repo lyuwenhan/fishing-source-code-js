@@ -107,9 +107,24 @@ export default class Data {
 			configurable: false,
 			enumerable: true
 		});
-		this.gameState = this.#getGameState();
-		this.getData = this.#getData.bind(this);
-		this.getGameState = this.#getGameState.bind(this);
+		Object.defineProperty(this, "gameState", {
+			value: this.#getGameState(),
+			writable: false,
+			configurable: false,
+			enumerable: true
+		});
+		Object.defineProperty(this, "getData", {
+			value: this.#getData.bind(this),
+			writable: false,
+			configurable: false,
+			enumerable: true
+		});
+		Object.defineProperty(this, "getGameState", {
+			value: this.#getGameState.bind(this),
+			writable: false,
+			configurable: false,
+			enumerable: true
+		});
 		Object.seal(this)
 	}
 }

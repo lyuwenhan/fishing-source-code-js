@@ -184,7 +184,12 @@ export default class Adventure {
 			this.#m2.push(String.fromCharCode(97 + i))
 		}
 		this.#m1 = new Map(this.#m2.map((ch, i) => [ch, i]));
-		this.run = this.#run.bind(this);
+		Object.defineProperty(this, "run", {
+			value: this.#run.bind(this),
+			writable: false,
+			configurable: false,
+			enumerable: true
+		});
 		Object.seal(this)
 	}
 }

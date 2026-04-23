@@ -47,7 +47,7 @@ export function createGameInstance(write, loadGame, saveGame, hasSave, languageC
 			while (true) {
 				let type = await functions.getch();
 				if (type === "1") {
-					await fishing();
+					await fishing.run();
 					break
 				} else if (type === "2") {
 					await shop.run();

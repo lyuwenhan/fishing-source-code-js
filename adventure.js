@@ -168,7 +168,7 @@ export default class Adventure {
 		}
 		await this.#functions.sleep(.5)
 	}
-	async adventure() {
+	async run() {
 		if (this.#data.gameState.dataSaver.challengeLevel !== 1) {
 			return
 		}

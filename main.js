@@ -8,7 +8,6 @@ import Parkour from "./parkour.js";
 import Lottery from "./lottery.js";
 import Adventure from "./adventure.js";
 import Settings from "./settings.js";
-import deepCopy from "./deepCopy.js";
 export function createGameInstance(write, loadGame, saveGame, hasSave, languageCode) {
 	const data = new Data;
 	const lang = new Lang(languageCode);
@@ -86,7 +85,7 @@ export function createGameInstance(write, loadGame, saveGame, hasSave, languageC
 			functions.onInput(str)
 		},
 		languages: {
-			langs: deepCopy(lang.langs),
+			langs: functions.deepCopy(lang.langs),
 			setLanguage: code => {
 				lang.setLanguage(code)
 			}

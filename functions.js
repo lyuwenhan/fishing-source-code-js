@@ -181,6 +181,19 @@ export default class Functions {
 		}
 		return Math.min(max, Math.max(min, Math.trunc(numberValue)))
 	}
+	deepCopy(obj) {
+		if (obj === null || typeof obj !== "object") {
+			return obj
+		}
+		if (Array.isArray(obj)) {
+			return obj.map(item => this.deepCopy(item))
+		}
+		const result = {};
+		for (const key of Object.keys(obj)) {
+			result[key] = this.deepCopy(obj[key])
+		}
+		return result
+	}
 	constructor(data, lang) {
 		this.#data = data;
 		this.#lang = lang;

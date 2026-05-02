@@ -107,7 +107,6 @@ export function getCopy() {
 			makeFishingRod: "Make fishing rod",
 			currentFishingRod: "Current fishing rod",
 			fishingRod: "Rod",
-			rawFish: "Raw fish",
 			currentAmount: "Current amount",
 			fishpond: "Fishpond",
 			fishNumber: " fish",

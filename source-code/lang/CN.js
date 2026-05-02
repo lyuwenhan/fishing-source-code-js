@@ -108,7 +108,6 @@ export function getCopy() {
 			makeFishingRod: "制作鱼竿",
 			currentFishingRod: "当前鱼竿",
 			fishingRod: "的鱼竿",
-			rawFish: "生鱼",
 			currentAmount: "当前数量",
 			fishpond: "鱼池",
 			fishNumber: "只",

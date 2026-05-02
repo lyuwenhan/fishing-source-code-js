@@ -214,9 +214,6 @@
 			window.addEventListener("resize", () => {
 				fitAddon.fit()
 			});
-			terminal.addEventListener("contextmenu", e => {
-				e.preventDefault()
-			}, true);
 
 			function getData() {
 				let data = {};
@@ -265,10 +262,16 @@
 				setLanguage: () => {}
 			};
 			let disposers = [];
-			import("./source-code/main.js").then(async fishing => {
+			import("./main.js").then(async fishing => {
 				while (true) {
 					const gameInstance = fishing.createGameInstance(text => term.write(text), loadGame, saveGame, hasSave);
 					langs = gameInstance.languages;
+					const settings = gameInstance.settings;
+					settings.developerMode = true;
+					settings.skipStory = true;
+					settings.forceUsername = "USERNAME_FOR_TEST";
+					settings.forceBlancPassword = true;
+					settings.forceInstantOutput = true;
 					gameInstance.setConsoleSize({
 						cols: term.cols,
 						rows: term.rows

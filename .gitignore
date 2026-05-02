@@ -1,0 +1,6 @@
+/node_modules
+/dist
+
+/electron/main.js
+
+/electron/icons/icon.iconset/

@@ -1,0 +1,209 @@
+name: Build Electron
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - docs/**
+      - electron/icons/icon.ico
+      - electron/icons/icon.icns
+      - data/**
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    name: Install and bundle
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run bundle
+
+      - name: Commit bundled main.js
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add electron/main.js
+          if git diff --cached --quiet; then
+            echo "No bundle changes"
+          else
+            git commit -m "build: update bundled main.js [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
+
+  docs:
+    name: Copy bundle to docs
+    runs-on: ubuntu-latest
+    needs: bundle
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: git pull origin main
+
+      - name: Copy main.js to docs
+        run: |
+          mkdir -p docs
+          cp electron/main.js docs/main.js
+
+      - name: Commit docs main.js
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/main.js
+          if git diff --cached --quiet; then
+            echo "No docs changes"
+          else
+            git commit -m "build: update docs main.js [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
+
+  icon-ico:
+    name: Generate icon.ico on Ubuntu
+    runs-on: ubuntu-latest
+    needs: docs
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: git pull origin main
+
+      - name: Install ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+
+      - name: Generate icon.ico
+        run: convert electron/icons/16x16.png electron/icons/24x24.png electron/icons/32x32.png electron/icons/48x48.png electron/icons/64x64.png electron/icons/128x128.png electron/icons/256x256.png electron/icons/icon.ico
+
+      - name: Commit icon.ico
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add electron/icons/icon.ico
+          if git diff --cached --quiet; then
+            echo "No ico changes"
+          else
+            git commit -m "build: update icon.ico [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
+
+  icon-icns:
+    name: Generate icon.icns on macOS
+    runs-on: macos-latest
+    needs: icon-ico
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: git pull origin main
+
+      - name: Generate icon.icns
+        run: |
+          mkdir -p electron/icons/icon.iconset
+          cp electron/icons/16x16.png electron/icons/icon.iconset/icon_16x16.png
+          cp electron/icons/32x32.png electron/icons/icon.iconset/icon_16x16@2x.png
+          cp electron/icons/32x32.png electron/icons/icon.iconset/icon_32x32.png
+          cp electron/icons/64x64.png electron/icons/icon.iconset/icon_32x32@2x.png
+          cp electron/icons/128x128.png electron/icons/icon.iconset/icon_128x128.png
+          cp electron/icons/256x256.png electron/icons/icon.iconset/icon_128x128@2x.png
+          cp electron/icons/256x256.png electron/icons/icon.iconset/icon_256x256.png
+          cp electron/icons/512x512.png electron/icons/icon.iconset/icon_256x256@2x.png
+          cp electron/icons/512x512.png electron/icons/icon.iconset/icon_512x512.png
+          cp electron/icons/1024x1024.png electron/icons/icon.iconset/icon_512x512@2x.png
+          iconutil -c icns electron/icons/icon.iconset -o electron/icons/icon.icns
+          rm -rf electron/icons/icon.iconset
+
+      - name: Commit icon.icns
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add electron/icons/icon.icns
+          if git diff --cached --quiet; then
+            echo "No icns changes"
+          else
+            git commit -m "build: update icon.icns [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
+
+  build:
+    name: Build ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    needs: icon-icns
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: windows
+            command: npx electron-builder --win --publish never
+            copy: cp -f dist/*.exe data/windows/ || true
+          - os: ubuntu-latest
+            platform: linux
+            command: npx electron-builder --linux --publish never
+            copy: cp -f dist/*.AppImage dist/*.deb data/linux/ || true
+          - os: macos-latest
+            platform: macos
+            command: npx electron-builder --mac --publish never
+            copy: cp -f dist/*.dmg dist/*.zip data/macos/ || true
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: git pull origin main
+        shell: bash
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: ${{ matrix.command }}
+
+      - name: Copy build outputs to data
+        shell: bash
+        run: |
+          mkdir -p data/${{ matrix.platform }}
+          ${{ matrix.copy }}
+
+      - name: Commit build outputs
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/${{ matrix.platform }}
+          if git diff --cached --quiet; then
+            echo "No build output changes"
+          else
+            git commit -m "build: update ${{ matrix.platform }} app [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi

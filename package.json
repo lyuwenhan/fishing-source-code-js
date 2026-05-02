@@ -1,0 +1,78 @@
+{
+	"name": "fishing-source-code-js",
+	"version": "1.0.0",
+	"description": "Port fishing-source-code-cpp to a esm javascript lib",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/lyuwenhan/fishing-source-code-js.git"
+	},
+	"scripts": {
+		"bundle": "esbuild source-code/main.js --bundle --format=esm --platform=browser --outfile=electron/main.js",
+		"start": "npm run bundle && electron electron",
+		"pack": "npm run bundle && electron-builder --dir",
+		"dist": "npm run bundle && electron-builder --publish never",
+		"dist:win": "npm run bundle && electron-builder --win --publish never",
+		"dist:linux": "npm run bundle && electron-builder --linux --publish never",
+		"dist:mac": "npm run bundle && electron-builder --mac --publish never"
+	},
+	"main": "electron/electron-main.js",
+	"build": {
+		"appId": "com.local.fishing",
+		"productName": "Fishing",
+		"directories": {
+			"output": "dist",
+			"buildResources": "electron/icons"
+		},
+		"files": [
+			"package.json",
+			"package-lock.json",
+			"electron/electron-main.js",
+			"electron/index.html",
+			"electron/main.js",
+			"electron/lib/**/*",
+			"electron/icons/**/*"
+		],
+		"win": {
+			"icon": "electron/icons/icon.ico",
+			"target": [
+				"nsis",
+				"portable"
+			]
+		},
+		"linux": {
+			"icon": "electron/icons",
+			"target": [
+				"AppImage",
+				"deb"
+			],
+			"category": "Game"
+		},
+		"mac": {
+			"icon": "electron/icons/icon.icns",
+			"target": [
+				"dmg",
+				"zip"
+			],
+			"category": "public.app-category.games"
+		},
+		"nsis": {
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true,
+			"installerIcon": "electron/icons/icon.ico",
+			"uninstallerIcon": "electron/icons/icon.ico"
+		}
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"type": "module",
+	"bugs": {
+		"url": "https://github.com/lyuwenhan/fishing-source-code-js/issues"
+	},
+	"homepage": "https://github.com/lyuwenhan/fishing-source-code-js#readme",
+	"devDependencies": {
+		"electron": "^41.3.0",
+		"electron-builder": "^26.8.1",
+		"esbuild": "^0.28.0"
+	}
+}

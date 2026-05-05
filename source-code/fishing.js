@@ -267,7 +267,7 @@ export default function createFishing(lang, functions, data, io) {
 		}
 		while (time > .1) {
 			await functions.sleep(.1);
-			if (minWaitingTime > 0) {
+			if (minWaitingTime > 10) {
 				minWaitingTime -= 1
 			}
 			if (maxWaitingTime > 10) {

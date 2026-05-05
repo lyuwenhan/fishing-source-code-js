@@ -1,4 +1,4 @@
-export default function createSettings(lang, functions, data, io) {
+export default function createSettings(functions, lang, data, io) {
 	async function choose() {
 		await io.clear();
 		if (!data.gameState.settings.forceInstantOutput) {

@@ -54,6 +54,43 @@ export default function createFunctions() {
 		return freeze(value)
 	}
 
+	function deepCopy(obj) {
+		if (obj === null || typeof obj !== "object") {
+			return obj
+		}
+		if (Array.isArray(obj)) {
+			return obj.map(item => deepCopy(item))
+		}
+		const result = {};
+		for (const key of Object.keys(obj)) {
+			result[key] = deepCopy(obj[key])
+		}
+		return result
+	}
+
+	function deepMerge(...items) {
+		function merge(items) {
+			items = items.filter(item => item !== undefined && item !== null);
+			if (items.length === 0) {
+				return items[0]
+			}
+			if (items.length === 1) {
+				return items[0]
+			}
+			if (isPlainObject(items[0])) {
+				const keys = [...new Set(items.filter(item => isPlainObject(item)).map(item => Object.keys(item)).flat())];
+				const result = {};
+				for (const key of keys) {
+					result[key] = merge(items.map(item => item[key]))
+				}
+				return result
+			} else {
+				return items[0]
+			}
+		}
+		return merge(items.map(item => deepCopy(item)))
+	}
+
 	function clamp(value, min, max, fallback = min) {
 		const numberValue = Number(value);
 		if (Number.isNaN(numberValue)) {
@@ -69,20 +106,6 @@ export default function createFunctions() {
 		}
 		return Math.min(max, Math.max(min, Math.trunc(numberValue)))
 	}
-
-	function deepCopy(obj) {
-		if (obj === null || typeof obj !== "object") {
-			return obj
-		}
-		if (Array.isArray(obj)) {
-			return obj.map(item => deepCopy(item))
-		}
-		const result = {};
-		for (const key of Object.keys(obj)) {
-			result[key] = deepCopy(obj[key])
-		}
-		return result
-	}
 	return Object.freeze({
 		listToChoice,
 		isNumberBetween,
@@ -91,8 +114,9 @@ export default function createFunctions() {
 		random,
 		isPlainObject,
 		deepFreeze,
+		deepCopy,
+		deepMerge,
 		clamp,
-		clampInt,
-		deepCopy
+		clampInt
 	})
 }

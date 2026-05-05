@@ -1,4 +1,4 @@
-export default function createParkour(lang, functions, data, io) {
+export default function createParkour(functions, lang, data, io) {
 	let level = 0;
 	let x = 0;
 	let y = 0;

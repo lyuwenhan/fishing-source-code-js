@@ -1,4 +1,4 @@
-export default function createAdventure(lang, functions, data, io) {
+export default function createAdventure(functions, lang, data, io) {
 	let now = 0;
 	let america = 0;
 	let sleepcnt = 0;

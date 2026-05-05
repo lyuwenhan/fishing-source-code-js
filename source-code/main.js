@@ -11,18 +11,18 @@ import createLottery from "./lottery.js";
 import createAdventure from "./adventure.js";
 import createSettings from "./settings.js";
 export function createGameInstance(write, loadGame, saveGame, hasSave, languageCode) {
-	const lang = createLang(languageCode);
 	const functions = createFunctions();
+	const lang = createLang(functions, languageCode);
 	const data = createData(functions);
-	const io = createIo(lang, functions, data);
+	const io = createIo(functions, lang, data);
 	const normalizeDataSaver = createNormalizeDataSaver(functions, data);
-	const checkpoint = createCheckpoint(lang, functions, data, io, normalizeDataSaver);
-	const shop = createShop(lang, functions, data, io);
-	const fishing = createFishing(lang, functions, data, io);
-	const parkour = createParkour(lang, functions, data, io);
-	const lottery = createLottery(lang, functions, data, io);
-	const adventure = createAdventure(lang, functions, data, io);
-	const settings = createSettings(lang, functions, data, io);
+	const checkpoint = createCheckpoint(functions, lang, data, io, normalizeDataSaver);
+	const shop = createShop(functions, lang, data, io);
+	const fishing = createFishing(functions, lang, data, io);
+	const parkour = createParkour(functions, lang, data, io);
+	const lottery = createLottery(functions, lang, data, io);
+	const adventure = createAdventure(functions, lang, data, io);
+	const settings = createSettings(functions, lang, data, io);
 	data.gameState.setRequiredFunctions(write, loadGame, saveGame, hasSave);
 	let launchCount = 0;
 	async function launch() {
@@ -92,6 +92,9 @@ export function createGameInstance(write, loadGame, saveGame, hasSave, languageC
 			langs: functions.deepCopy(lang.langs),
 			setLanguage: code => {
 				lang.setLanguage(code)
+			},
+			get currentLangCode() {
+				return lang.langCode
 			}
 		},
 		settings: data.gameState.settings,

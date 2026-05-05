@@ -1,4 +1,4 @@
-export default function createShop(lang, functions, data, io) {
+export default function createShop(functions, lang, data, io) {
 	function avgText(minValue, maxValue) {
 		const sum = minValue + maxValue;
 		return sum % 2 === 0 ? String(sum / 2) : `${Math.floor(sum/2)}.5`

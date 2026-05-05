@@ -1,4 +1,4 @@
-export default function createCheckpoint(lang, functions, data, io, normalizeDataSaver) {
+export default function createCheckpoint(functions, lang, data, io, normalizeDataSaver) {
 	async function loadGame() {
 		const loadState = await data.gameState.requiredFunctions.loadGame(data.gameState.username, data.gameState.password);
 		if (loadState?.code === 1) {

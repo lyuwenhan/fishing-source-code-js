@@ -1,4 +1,4 @@
-export default function createLottery(lang, functions, data, io) {
+export default function createLottery(functions, lang, data, io) {
 	async function run() {
 		while (true) {
 			await io.clear();

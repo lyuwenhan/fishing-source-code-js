@@ -1,4 +1,4 @@
-export default function createIo(lang, functions, data) {
+export default function createIo(functions, lang, data) {
 	const inputBuffer = [];
 	const waitingResolvers = [];
 

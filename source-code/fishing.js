@@ -1,4 +1,4 @@
-export default function createFishing(lang, functions, data, io) {
+export default function createFishing(functions, lang, data, io) {
 	const paintTemplate = Object.freeze(["                                            ", "                                            ", "                                            ", "                                            ", "                                            ", "                                            ", "                                            ", "                                            ", "                         o                  ", "                        /|\\--------         ", "                        /_\\___              ", "~~~~~~~~~~~~~~~~~~~~~~~|      |~~~~~~~~~~~~|", "                              |            |", "                              |            |", "                              |____________|"]);
 	const precipitationSymbol = Object.freeze([".", "*", " ", " ", " ", " "]);
 	const precipitationColor = Object.freeze(["\x1b[1;34m", "\x1b[1;36m", "", "", "", ""]);
@@ -116,13 +116,13 @@ export default function createFishing(lang, functions, data, io) {
 		if (changeCompactMode) {
 			data.gameState.dataSaver.compactMode = !data.gameState.dataSaver.compactMode
 		}
-		let weatherChanged = false,
-			precipitationPointsChanged = false;
+		let needClear = changeCompactMode;
+		let precipitationPointsChanged = false;
 		const now = Math.floor(Date.now() / 1e3);
 		while (now - lastDrawTime > 10) {
 			const newWeather = changeWeather(currentWeather);
 			if (newWeather[0] !== currentWeather[0] || newWeather[1] !== currentWeather[1]) {
-				weatherChanged = true
+				needClear = true
 			}
 			currentWeather = newWeather;
 			if (currentWeather[0] <= 1) {
@@ -133,16 +133,13 @@ export default function createFishing(lang, functions, data, io) {
 			}
 			lastDrawTime += 10
 		}
-		let needClear = changeCompactMode;
 		if (lastWaitingMinTime !== minWaitingTime || lastWaitingMaxTime !== maxWaitingTime) {
 			lastWaitingMinTime = minWaitingTime;
 			lastWaitingMaxTime = maxWaitingTime;
-			weatherChanged = true;
 			needClear = true
 		}
 		if (lastWaitingStatus !== currentWaitingStatus) {
 			lastWaitingStatus = currentWaitingStatus;
-			weatherChanged = true;
 			needClear = true
 		}
 		const stringConsoleSize = data.gameState.consoleSize.rows + " " + data.gameState.consoleSize.cols;
@@ -184,7 +181,7 @@ export default function createFishing(lang, functions, data, io) {
 		if (data.gameState.dataSaver.compactMode || notEnoughRows || notEnoughCols) {
 			if (needClear) {
 				await io.write("\x1bc\x1b[?25l")
-			} else if (data.gameState.dataSaver.compactMode || weatherChanged) {
+			} else if (data.gameState.dataSaver.compactMode) {
 				await io.write("\x1b[H")
 			} else {
 				return
@@ -202,7 +199,7 @@ export default function createFishing(lang, functions, data, io) {
 		} else {
 			if (needClear) {
 				await io.write("\x1bc\x1b[?25l")
-			} else if (weatherChanged || precipitationPointsChanged) {
+			} else if (precipitationPointsChanged) {
 				await io.write("\x1b[H")
 			} else {
 				return
@@ -584,7 +581,7 @@ export default function createFishing(lang, functions, data, io) {
 	async function makeFishingRod() {
 		await io.clear();
 		await io.print(lang.current.fishing.makeFishingRod);
-		await io.print(lang.current.fishing.currentFishingRod + lang.current.fishing.fishName[data.gameState.dataSaver.rodLevel] + lang.current.fishing.fishingRod);
+		await io.print(lang.current.fishing.currentFishingRod + lang.current.getValue("fishing", "fishName", data.gameState.dataSaver.rodLevel) + lang.current.fishing.fishingRod);
 		let hasFishInPond = Array(8).fill(false);
 		let fishInPondChoices = "";
 		for (let i = 0; i <= 6; i++) {
@@ -629,7 +626,7 @@ export default function createFishing(lang, functions, data, io) {
 				await functions.sleep(.5);
 				return
 			}
-			fishInPondChoices += lang.current.exit;
+			fishInPondChoices += "7. " + lang.current.exit;
 			for (let i = 1; i <= 6; i++) {
 				await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
 				if (fishInPond[i].length) {
@@ -679,7 +676,7 @@ export default function createFishing(lang, functions, data, io) {
 			await functions.sleep(.5);
 			return
 		}
-		fishInPondChoices += lang.current.exit;
+		fishInPondChoices += "7. " + lang.current.exit;
 		for (let i = 1; i <= 6; i++) {
 			await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
 			if (fishInPond[i].length) {
@@ -789,7 +786,7 @@ export default function createFishing(lang, functions, data, io) {
 				await functions.sleep(.5);
 				return
 			}
-			fishInPondChoices += lang.current.exit;
+			fishInPondChoices += "7. " + lang.current.exit;
 			for (let i = 1; i <= 6; i++) {
 				await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
 				if (data.gameState.dataSaver.foodFish[i][0]) {
@@ -840,7 +837,7 @@ export default function createFishing(lang, functions, data, io) {
 				await functions.sleep(.5);
 				return
 			}
-			fishInPondChoices += lang.current.exit;
+			fishInPondChoices += "7. " + lang.current.exit;
 			for (let i = 1; i <= 6; i++) {
 				await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
 				if (data.gameState.dataSaver.foodFish[i][1]) {
@@ -960,7 +957,7 @@ export default function createFishing(lang, functions, data, io) {
 			await io.print(functions.listToChoice(lang.current.fishing.mainMenu));
 			await io.printnl(lang.current.fishing.currentHunger + ": ");
 			await io.write((data.gameState.dataSaver.hunger < 10 ? "\x1b[31;1m" : data.gameState.dataSaver.hunger < 30 ? "" : data.gameState.dataSaver.hunger < 35 ? "\x1b[32m" : "\x1b[32;1m") + data.gameState.dataSaver.hunger + "\x1b[m\n");
-			await io.print(lang.current.fishing.currentFishingRod + ": " + lang.current.fishing.fishName[data.gameState.dataSaver.rodLevel] + lang.current.fishing.fishingRod);
+			await io.print(lang.current.fishing.currentFishingRod + ": " + lang.current.getValue("fishing", "fishName", data.gameState.dataSaver.rodLevel) + lang.current.fishing.fishingRod);
 			for (let i = 0; i <= 6; i++) {
 				await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
 				for (let j = 0; j < fishInPond[i].length; j++) {

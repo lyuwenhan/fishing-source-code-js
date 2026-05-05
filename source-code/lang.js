@@ -1,6 +1,6 @@
 import * as EN from "./lang/EN.js";
 import * as CN from "./lang/CN.js";
-export default function createLang(code) {
+export default function createLang(functions, code) {
 	const langs = {
 		EN: EN.getCopy(),
 		CN: CN.getCopy()
@@ -12,10 +12,7 @@ export default function createLang(code) {
 	function setLanguage(lang) {
 		if (langs[lang]) {
 			langCode = lang;
-			current = {
-				...langs.EN,
-				...langs[lang]
-			}
+			current = functions.deepMerge(langs[lang], langs.EN)
 		}
 	}
 	if (code) {

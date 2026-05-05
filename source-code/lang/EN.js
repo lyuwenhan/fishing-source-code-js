@@ -83,7 +83,7 @@ export function getCopy() {
 			swimTip: "Use WASD to swim, press R to respawn, press Backspace to exit."
 		},
 		fishing: {
-			weatherNames: ["Rain", "Snow", "Sunny     ", "Overcast  ", "Cloudy    ", "Fog       "],
+			weatherNames: ["Rain", "Snow", "Sunny        ", "Overcast     ", "Cloudy       ", "Fog          "],
 			rainSize: ["", "   Light ", "Moderate ", "   Heavy "],
 			fishName: ["Rotten ", "Common ", "Amethyst ", "L.Lazuli ", "Gold ", "Emerald ", "Diamond "],
 			waitingStatus: ["Casting the rod", "Waiting", "Fish approaching", "Reeling in", "Fish got off"],

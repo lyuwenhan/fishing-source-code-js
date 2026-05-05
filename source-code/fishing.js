@@ -598,7 +598,7 @@ export default function createFishing(lang, functions, data, io) {
 			await io.print(lang.current.fishing.none);
 			return
 		}
-		fishInPondChoices += lang.current.exit;
+		fishInPondChoices += "7. " + lang.current.exit;
 		await io.print(fishInPondChoices);
 		let selectedFishInPondIndex;
 		do {

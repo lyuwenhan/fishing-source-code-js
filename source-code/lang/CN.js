@@ -84,7 +84,7 @@ export function getCopy() {
 			swimTip: "使用 WASD 进行游泳, 按 R 重生, 按 Backspace 退出"
 		},
 		fishing: {
-			weatherNames: ["雨  ", "雪  ", "晴    ", "阴    ", "多云  ", "雾    "],
+			weatherNames: ["雨", "雪", "晴  ", "阴  ", "多云", "雾  "],
 			rainSize: ["", "小", "中", "大"],
 			fishName: ["腐烂的", "普通的", "紫水晶", "青金石", "金", "绿宝石", "钻石"],
 			waitingStatus: ["抛竿中", "等待中", "鱼正在靠近", "正在收杆", "已脱钩"],

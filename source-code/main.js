@@ -32,7 +32,7 @@ export function createGameInstance(write, loadGame, saveGame, hasSave, languageC
 		}
 		await io.clear();
 		if (!data.gameState.settings.skipStory) {
-			for (let text of lang.current.main.story) {
+			for (let text of functions.getLangWithFallback(lang.current, "current", "main", "story")) {
 				await io.printa(text)
 			}
 		}
@@ -47,7 +47,7 @@ export function createGameInstance(write, loadGame, saveGame, hasSave, languageC
 		}
 		while (true) {
 			await io.clear();
-			await io.print(functions.listToChoice(lang.current.main.mainMenu));
+			await io.print(functions.listToChoice(functions.getLangWithFallback(lang.current, "current", "main", "mainMenu")));
 			while (true) {
 				let type = await io.getch();
 				if (type === "1") {
@@ -69,7 +69,7 @@ export function createGameInstance(write, loadGame, saveGame, hasSave, languageC
 						await adventure()
 					} else {
 						await io.clear();
-						await io.printa(lang.current.main.challengeCompleted)
+						await io.printa(functions.getLangWithFallback(lang.current, "current", "main", "challengeCompleted"))
 					}
 					break
 				} else if (type === "6") {

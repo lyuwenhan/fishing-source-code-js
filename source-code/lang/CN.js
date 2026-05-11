@@ -1,4 +1,4 @@
-import * as adventureStory from "./CN/adventureStoryCN.js";
+import * as adventureStory from "./adventure/adventureStoryCN.js";
 const exit = "退出";
 export function getCopy() {
 	return {

@@ -10,94 +10,94 @@ export default function createShop(functions, lang, data, io) {
 	async function shop0() {
 		while (true) {
 			await io.clear();
-			await io.print(functions.listToChoice(lang.current.shop.shopMainMenu));
-			await io.print(lang.current.shop.hookSpeedTitle + ": ");
+			await io.print(functions.listToChoice(functions.getLangWithFallback(lang.current, "current", "shop", "shopMainMenu")));
+			await io.print(functions.getLangWithFallback(lang.current, "current", "shop", "hookSpeedTitle") + ": ");
 			if (data.gameState.dataSaver.catchSpeedLevel === data.constant.maxCatchSpeedLevel) {
-				await io.print("    " + lang.current.shop.maxLevelReached)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "maxLevelReached"))
 			} else {
-				await io.print("    " + lang.current.shop.hookSpeedCurrentPrefix + ": " + avgText(data.constant.minCatchSpeed[data.gameState.dataSaver.catchSpeedLevel], data.constant.maxCatchSpeed[data.gameState.dataSaver.catchSpeedLevel]) + ", " + lang.current.shop.hookSpeedNextPrefix + ": " + avgText(data.constant.minCatchSpeed[data.gameState.dataSaver.catchSpeedLevel + 1], data.constant.maxCatchSpeed[data.gameState.dataSaver.catchSpeedLevel + 1]));
-				await io.print("    " + lang.current.shop.upgradeCostPrefix + ": $" + data.constant.catchSpeedUpgradeCost[data.gameState.dataSaver.catchSpeedLevel + 1] + ", " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "hookSpeedCurrentPrefix") + ": " + avgText(data.constant.minCatchSpeed[data.gameState.dataSaver.catchSpeedLevel], data.constant.maxCatchSpeed[data.gameState.dataSaver.catchSpeedLevel]) + ", " + functions.getLangWithFallback(lang.current, "current", "shop", "hookSpeedNextPrefix") + ": " + avgText(data.constant.minCatchSpeed[data.gameState.dataSaver.catchSpeedLevel + 1], data.constant.maxCatchSpeed[data.gameState.dataSaver.catchSpeedLevel + 1]));
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "upgradeCostPrefix") + ": $" + data.constant.catchSpeedUpgradeCost[data.gameState.dataSaver.catchSpeedLevel + 1] + ", " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money)
 			}
-			await io.print(lang.current.shop.fishingIncomeTitle + ": ");
+			await io.print(functions.getLangWithFallback(lang.current, "current", "shop", "fishingIncomeTitle") + ": ");
 			if (data.gameState.dataSaver.incomeLevel === data.constant.maxIncomeLevel) {
-				await io.print("    " + lang.current.shop.maxLevelReached)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "maxLevelReached"))
 			} else {
-				await io.print("    " + lang.current.shop.fishingIncomeCurrentPrefix + ": " + avgText(data.constant.minIncome[data.gameState.dataSaver.incomeLevel], data.constant.maxIncome[data.gameState.dataSaver.incomeLevel]) + ", " + lang.current.shop.fishingIncomeNextPrefix + ": " + avgText(data.constant.minIncome[data.gameState.dataSaver.incomeLevel + 1], data.constant.maxIncome[data.gameState.dataSaver.incomeLevel + 1]));
-				await io.print("    " + lang.current.shop.upgradeCostPrefix + ": $" + data.constant.incomeLevelUpgradeCost[data.gameState.dataSaver.incomeLevel + 1] + ", " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "fishingIncomeCurrentPrefix") + ": " + avgText(data.constant.minIncome[data.gameState.dataSaver.incomeLevel], data.constant.maxIncome[data.gameState.dataSaver.incomeLevel]) + ", " + functions.getLangWithFallback(lang.current, "current", "shop", "fishingIncomeNextPrefix") + ": " + avgText(data.constant.minIncome[data.gameState.dataSaver.incomeLevel + 1], data.constant.maxIncome[data.gameState.dataSaver.incomeLevel + 1]));
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "upgradeCostPrefix") + ": $" + data.constant.incomeLevelUpgradeCost[data.gameState.dataSaver.incomeLevel + 1] + ", " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money)
 			}
-			await io.print(lang.current.shop.hookOffTitle + ": ");
+			await io.print(functions.getLangWithFallback(lang.current, "current", "shop", "hookOffTitle") + ": ");
 			if (data.gameState.dataSaver.slipOffChance === 0) {
-				await io.print("    " + lang.current.shop.maxLevelReached)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "maxLevelReached"))
 			} else if (data.gameState.dataSaver.slipOffChance > 10) {
-				await io.print("    " + lang.current.shop.hookOffCurrentPrefix + ": " + data.gameState.dataSaver.slipOffChance + "%, " + lang.current.shop.hookOffNextPrefix + ": " + (data.gameState.dataSaver.slipOffChance - 10) + "%");
-				await io.print("    " + lang.current.shop.hookOffCostPrefix + " $100, " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffCurrentPrefix") + ": " + data.gameState.dataSaver.slipOffChance + "%, " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffNextPrefix") + ": " + (data.gameState.dataSaver.slipOffChance - 10) + "%");
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffCostPrefix") + " $100, " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money)
 			} else if (data.gameState.dataSaver.slipOffChance > 5) {
-				await io.print("    " + lang.current.shop.hookOffPresetCurrent + " 10% " + lang.current.shop.hookOffPresetNext + " 5%");
-				await io.print("    " + lang.current.shop.hookOffCostPrefix + " $100, " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffPresetCurrent") + " 10% " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffPresetNext") + " 5%");
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffCostPrefix") + " $100, " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money)
 			} else if (data.gameState.dataSaver.slipOffChance > 1) {
-				await io.print("    " + lang.current.shop.hookOffCurrentPrefix + ": " + data.gameState.dataSaver.slipOffChance + "%, " + lang.current.shop.hookOffNextPrefix + ": " + (data.gameState.dataSaver.slipOffChance - 1) + "%");
-				await io.print("    " + lang.current.shop.hookOffCostPrefix + " $100, " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffCurrentPrefix") + ": " + data.gameState.dataSaver.slipOffChance + "%, " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffNextPrefix") + ": " + (data.gameState.dataSaver.slipOffChance - 1) + "%");
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffCostPrefix") + " $100, " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money)
 			} else {
-				await io.print("    " + lang.current.shop.hookOffPresetCurrent + " 1% " + lang.current.shop.hookOffPresetNext + " 0%");
-				await io.print("    " + lang.current.shop.hookOffCostPrefix + " $500, " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffPresetCurrent") + " 1% " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffPresetNext") + " 0%");
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "hookOffCostPrefix") + " $500, " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money)
 			}
-			await io.print("    " + lang.current.shop.purchaseCostPrefix + " $10, " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money);
-			await io.print(lang.current.shop.ovenCountTitle + ": ");
+			await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseCostPrefix") + " $10, " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money);
+			await io.print(functions.getLangWithFallback(lang.current, "current", "shop", "ovenCountTitle") + ": ");
 			if (data.gameState.dataSaver.ovenCount >= 3) {
-				await io.print("    " + lang.current.shop.ovenMaxCount)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "ovenMaxCount"))
 			} else {
-				await io.print("    " + lang.current.shop.ovenCurrentPrefix + ": " + data.gameState.dataSaver.ovenCount);
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "ovenCurrentPrefix") + ": " + data.gameState.dataSaver.ovenCount);
 				if (data.gameState.dataSaver.ovenCount < 1) {
-					await io.print("    " + lang.current.shop.purchaseCostPrefix + " $50, " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money)
+					await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseCostPrefix") + " $50, " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money)
 				} else if (data.gameState.dataSaver.ovenCount === 1) {
-					await io.print("    " + lang.current.shop.purchaseCostPrefix + " $1000, " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money)
+					await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseCostPrefix") + " $1000, " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money)
 				} else {
-					await io.print("    " + lang.current.shop.purchaseCostPrefix + " $2000, " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money)
+					await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseCostPrefix") + " $2000, " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money)
 				}
 			}
 			while (true) {
 				const type = await io.getch();
 				if (type === "1") {
 					if (data.gameState.dataSaver.catchSpeedLevel === data.constant.maxCatchSpeedLevel) {
-						await showResult("    " + lang.current.shop.maxLevelReached);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "maxLevelReached"));
 						break
 					} else if (data.gameState.dataSaver.money < data.constant.catchSpeedUpgradeCost[data.gameState.dataSaver.catchSpeedLevel + 1]) {
-						await showResult("    " + lang.current.shop.notEnoughMoney);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "notEnoughMoney"));
 						break
 					} else {
 						data.gameState.dataSaver.money -= data.constant.catchSpeedUpgradeCost[++data.gameState.dataSaver.catchSpeedLevel];
-						await showResult("    " + lang.current.shop.purchaseSuccess);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseSuccess"));
 						break
 					}
 				} else if (type === "2") {
 					if (data.gameState.dataSaver.incomeLevel === data.constant.maxIncomeLevel) {
-						await showResult("    " + lang.current.shop.maxLevelReached);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "maxLevelReached"));
 						break
 					} else if (data.gameState.dataSaver.money < data.constant.incomeLevelUpgradeCost[data.gameState.dataSaver.incomeLevel + 1]) {
-						await showResult("    " + lang.current.shop.notEnoughMoney);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "notEnoughMoney"));
 						break
 					} else {
 						data.gameState.dataSaver.money -= data.constant.incomeLevelUpgradeCost[++data.gameState.dataSaver.incomeLevel];
-						await showResult("    " + lang.current.shop.purchaseSuccess);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseSuccess"));
 						break
 					}
 				} else if (type === "3") {
 					if (data.gameState.dataSaver.slipOffChance === 0) {
-						await showResult("    " + lang.current.shop.maxLevelReached);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "maxLevelReached"));
 						break
 					} else if (data.gameState.dataSaver.slipOffChance === 1) {
 						if (data.gameState.dataSaver.money < 500) {
-							await showResult("    " + lang.current.shop.notEnoughMoney);
+							await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "notEnoughMoney"));
 							break
 						} else {
 							data.gameState.dataSaver.money -= 500;
 							data.gameState.dataSaver.slipOffChance = 0;
-							await showResult("    " + lang.current.shop.purchaseSuccess);
+							await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseSuccess"));
 							break
 						}
 					} else {
 						if (data.gameState.dataSaver.money < 100) {
-							await showResult("    " + lang.current.shop.notEnoughMoney);
+							await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "notEnoughMoney"));
 							break
 						} else {
 							data.gameState.dataSaver.money -= 100;
@@ -108,43 +108,43 @@ export default function createShop(functions, lang, data, io) {
 							} else if (data.gameState.dataSaver.slipOffChance > 0) {
 								data.gameState.dataSaver.slipOffChance -= 1
 							}
-							await showResult("    " + lang.current.shop.purchaseSuccess);
+							await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseSuccess"));
 							break
 						}
 					}
 				} else if (type === "4") {
 					if (data.gameState.dataSaver.ovenCount >= 3) {
-						await showResult("    " + lang.current.shop.ovenMaxCount);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "ovenMaxCount"));
 						break
 					} else {
 						if (data.gameState.dataSaver.ovenCount < 1) {
 							if (data.gameState.dataSaver.money < 50) {
-								await showResult("    " + lang.current.shop.notEnoughMoney);
+								await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "notEnoughMoney"));
 								break
 							} else {
 								data.gameState.dataSaver.money -= 50;
 								data.gameState.dataSaver.ovenCount = 1;
-								await showResult("    " + lang.current.shop.purchaseSuccess);
+								await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseSuccess"));
 								break
 							}
 						} else if (data.gameState.dataSaver.ovenCount === 1) {
 							if (data.gameState.dataSaver.money < 1e3) {
-								await showResult("    " + lang.current.shop.notEnoughMoney);
+								await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "notEnoughMoney"));
 								break
 							} else {
 								data.gameState.dataSaver.money -= 1e3;
 								data.gameState.dataSaver.ovenCount = 2;
-								await showResult("    " + lang.current.shop.purchaseSuccess);
+								await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseSuccess"));
 								break
 							}
 						} else {
 							if (data.gameState.dataSaver.money < 2e3) {
-								await showResult("    " + lang.current.shop.notEnoughMoney);
+								await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "notEnoughMoney"));
 								break
 							} else {
 								data.gameState.dataSaver.money -= 2e3;
 								data.gameState.dataSaver.ovenCount = 3;
-								await showResult("    " + lang.current.shop.purchaseSuccess);
+								await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseSuccess"));
 								break
 							}
 						}
@@ -158,47 +158,47 @@ export default function createShop(functions, lang, data, io) {
 	async function shop1() {
 		while (true) {
 			await io.clear();
-			await io.print(functions.listToChoice(lang.current.shop.superShopMainMenu));
-			await io.print(lang.current.shop.superCastSpeedTitle + ": ");
+			await io.print(functions.listToChoice(functions.getLangWithFallback(lang.current, "current", "shop", "superShopMainMenu")));
+			await io.print(functions.getLangWithFallback(lang.current, "current", "shop", "superCastSpeedTitle") + ": ");
 			if (data.gameState.dataSaver.actionSpeedMultiplier >= 10) {
-				await io.print("    " + lang.current.shop.maxLevelReached)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "maxLevelReached"))
 			} else {
-				await io.print("    " + lang.current.shop.superCurrentPrefix + ": " + data.gameState.dataSaver.actionSpeedMultiplier + " " + lang.current.shop.superNextPrefix + ": " + (data.gameState.dataSaver.actionSpeedMultiplier + 1) + " " + lang.current.shop.superSpeedSuffix);
-				await io.print("    " + lang.current.shop.purchaseCostPrefix + " $1000, " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "superCurrentPrefix") + ": " + data.gameState.dataSaver.actionSpeedMultiplier + " " + functions.getLangWithFallback(lang.current, "current", "shop", "superNextPrefix") + ": " + (data.gameState.dataSaver.actionSpeedMultiplier + 1) + " " + functions.getLangWithFallback(lang.current, "current", "shop", "superSpeedSuffix"));
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseCostPrefix") + " $1000, " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money)
 			}
-			await io.print(lang.current.shop.superBigFishTitle + ": ");
+			await io.print(functions.getLangWithFallback(lang.current, "current", "shop", "superBigFishTitle") + ": ");
 			if (data.gameState.dataSaver.bigFishChance >= 60) {
-				await io.print("    " + lang.current.shop.maxLevelReached)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "maxLevelReached"))
 			} else {
-				await io.print("    " + lang.current.shop.superBigFishCurrentPrefix + ": " + data.gameState.dataSaver.bigFishChance + " " + "%, " + lang.current.shop.superBigFishNextPrefix + ": " + (data.gameState.dataSaver.bigFishChance + 5) + "%");
-				await io.print("    " + lang.current.shop.purchaseCostPrefix + " $1000, " + lang.current.shop.currentGoldPrefix + ": $" + data.gameState.dataSaver.money)
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "superBigFishCurrentPrefix") + ": " + data.gameState.dataSaver.bigFishChance + " " + "%, " + functions.getLangWithFallback(lang.current, "current", "shop", "superBigFishNextPrefix") + ": " + (data.gameState.dataSaver.bigFishChance + 5) + "%");
+				await io.print("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseCostPrefix") + " $1000, " + functions.getLangWithFallback(lang.current, "current", "shop", "currentGoldPrefix") + ": $" + data.gameState.dataSaver.money)
 			}
 			while (true) {
 				const type = await io.getch();
 				if (type === "1") {
 					if (data.gameState.dataSaver.actionSpeedMultiplier >= 10) {
-						await showResult("    " + lang.current.shop.maxLevelReached);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "maxLevelReached"));
 						break
 					} else if (data.gameState.dataSaver.money < 1e3) {
-						await showResult("    " + lang.current.shop.notEnoughMoney);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "notEnoughMoney"));
 						break
 					} else {
 						data.gameState.dataSaver.money -= 1e3;
 						data.gameState.dataSaver.actionSpeedMultiplier++;
-						await showResult("    " + lang.current.shop.purchaseSuccess);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseSuccess"));
 						break
 					}
 				} else if (type === "2") {
 					if (data.gameState.dataSaver.bigFishChance >= 60) {
-						await showResult("    " + lang.current.shop.maxLevelReached);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "maxLevelReached"));
 						break
 					} else if (data.gameState.dataSaver.money < 1e3) {
-						await showResult("    " + lang.current.shop.notEnoughMoney);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "notEnoughMoney"));
 						break
 					} else {
 						data.gameState.dataSaver.money -= 1e3;
 						data.gameState.dataSaver.bigFishChance += 5;
-						await showResult("    " + lang.current.shop.purchaseSuccess);
+						await showResult("    " + functions.getLangWithFallback(lang.current, "current", "shop", "purchaseSuccess"));
 						break
 					}
 				} else if (type === "3") {
@@ -209,7 +209,7 @@ export default function createShop(functions, lang, data, io) {
 	}
 	async function run() {
 		await io.clear();
-		await io.print(functions.listToChoice(lang.current.shop.shopSelectMenu));
+		await io.print(functions.listToChoice(functions.getLangWithFallback(lang.current, "current", "shop", "shopSelectMenu")));
 		let type;
 		while (true) {
 			type = await io.getch();

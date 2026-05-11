@@ -2,8 +2,8 @@ export default function createSettings(functions, lang, data, io) {
 	async function choose() {
 		await io.clear();
 		if (!data.gameState.settings.forceInstantOutput) {
-			await io.print(lang.current.settings.chooseSpeed);
-			await io.print(functions.listToChoice(lang.current.settings.speedName));
+			await io.print(functions.getLangWithFallback(lang.current, "current", "settings", "chooseSpeed"));
+			await io.print(functions.listToChoice(functions.getLangWithFallback(lang.current, "current", "settings", "speedName")));
 			let c;
 			do {
 				c = await io.getch()
@@ -11,7 +11,7 @@ export default function createSettings(functions, lang, data, io) {
 			data.gameState.dataSaver.textSpeed = Number(c) - 1
 		}
 		await io.clear();
-		for (const text of lang.current.settings.skills) {
+		for (const text of functions.getLangWithFallback(lang.current, "current", "settings", "skills")) {
 			await io.print(text)
 		}
 		while (true) {
@@ -38,8 +38,8 @@ export default function createSettings(functions, lang, data, io) {
 	}
 	async function setTextSpeed() {
 		await io.clear();
-		await io.print(lang.current.settings.chooseSpeed);
-		await io.print(functions.listToChoice(lang.current.settings.speedName, lang.current.exit));
+		await io.print(functions.getLangWithFallback(lang.current, "current", "settings", "chooseSpeed"));
+		await io.print(functions.listToChoice(functions.getLangWithFallback(lang.current, "current", "settings", "speedName"), functions.getLangWithFallback(lang.current, "current", "exit")));
 		let c;
 		do {
 			c = Number(await io.getch())

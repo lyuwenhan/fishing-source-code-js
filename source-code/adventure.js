@@ -33,33 +33,33 @@ export default function createAdventure(functions, lang, data, io) {
 		await io.write("\n");
 		if (now === 21) {
 			if (!romar) {
-				await io.printa(lang.current.adventure.achievementAllRoadsToRome);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementAllRoadsToRome"));
 				data.gameState.dataSaver.money += 100
 			}
 			if (romar === 5) {
-				await io.printa(lang.current.adventure.achievementWrongWay);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementWrongWay"));
 				data.gameState.dataSaver.money += 100
 			}
 			romar++
 		}
 		if (now === 22) {
 			if (!america) {
-				await io.printa(lang.current.adventure.achievementVoyage);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementVoyage"));
 				data.gameState.dataSaver.money += 100
 			}
 			if (america === 5) {
-				await io.printa(lang.current.adventure.achievementWrongWay);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementWrongWay"));
 				data.gameState.dataSaver.money += 100
 			}
 			america++
 		}
 		if (now === 24) {
 			if (!headbone) {
-				await io.printa(lang.current.adventure.achievementSurprise);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementSurprise"));
 				data.gameState.dataSaver.money += 100
 			}
 			if (headbone === 5) {
-				await io.printa(lang.current.adventure.achievementArchaeologist);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementArchaeologist"));
 				data.gameState.dataSaver.money += 100
 			}
 			headbone++
@@ -83,27 +83,27 @@ export default function createAdventure(functions, lang, data, io) {
 		now = nextIds[idx];
 		if (now === 13) {
 			if (!temple) {
-				await io.printa(lang.current.adventure.achievementBuddhism);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementBuddhism"));
 				data.gameState.dataSaver.money += 100
 			} else if (temple === 5) {
-				await io.printa(lang.current.adventure.achievementAscend);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementAscend"));
 				data.gameState.dataSaver.money += 100
 			}
 			temple++
 		}
 		if (now === 30) {
 			if (eatcnt >= 30 && !drafood) {
-				await io.printa(lang.current.adventure.achievementDragonMeal);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementDragonMeal"));
 				data.gameState.dataSaver.money += 100
 			}
 			drafood++
 		}
 		if (now === -3) {
 			if (eatcnt >= 30 && e2 === 0) {
-				await io.printa(lang.current.adventure.achievementOriginalAspiration);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementOriginalAspiration"));
 				data.gameState.dataSaver.money += 100
 			} else if (eatcnt >= 30 && e2 === 5) {
-				await io.printa(lang.current.adventure.achievementMission);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementMission"));
 				data.gameState.dataSaver.money += 200
 			}
 			e2++;
@@ -111,10 +111,10 @@ export default function createAdventure(functions, lang, data, io) {
 		}
 		if (now === -4) {
 			if (sleepcnt >= 30 && s2 === 0) {
-				await io.printa(lang.current.adventure.achievementSoftBed);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementSoftBed"));
 				data.gameState.dataSaver.money += 100
 			} else if (sleepcnt >= 30 && s2 === 5) {
-				await io.printa(lang.current.adventure.achievementSleepComfort);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementSleepComfort"));
 				data.gameState.dataSaver.money += 200
 			}
 			s2++;
@@ -123,13 +123,13 @@ export default function createAdventure(functions, lang, data, io) {
 		if (now === -1) {
 			eatcnt++;
 			if (eatcnt === 5) {
-				await io.printa(lang.current.adventure.achievementNeedFood);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementNeedFood"));
 				data.gameState.dataSaver.money += 100
 			} else if (eatcnt === 10) {
-				await io.printa(lang.current.adventure.achievementHungryGhost);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementHungryGhost"));
 				data.gameState.dataSaver.money += 100
 			} else if (eatcnt === 30) {
-				await io.printa(lang.current.adventure.achievementVirtuousHui);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementVirtuousHui"));
 				data.gameState.dataSaver.money += 100
 			}
 			now = 1
@@ -137,13 +137,13 @@ export default function createAdventure(functions, lang, data, io) {
 		if (now === -2) {
 			sleepcnt++;
 			if (sleepcnt === 5) {
-				await io.printa(lang.current.adventure.achievementReadyAfterSleep);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementReadyAfterSleep"));
 				data.gameState.dataSaver.money += 100
 			} else if (sleepcnt === 10) {
-				await io.printa(lang.current.adventure.achievementBedComfort);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementBedComfort"));
 				data.gameState.dataSaver.money += 100
 			} else if (sleepcnt === 30) {
-				await io.printa(lang.current.adventure.achievementSleepGod);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "achievementSleepGod"));
 				data.gameState.dataSaver.money += 100
 			}
 			now = 1
@@ -155,10 +155,10 @@ export default function createAdventure(functions, lang, data, io) {
 			return
 		}
 		reset();
-		const things = lang.current.adventure.story;
+		const things = functions.getLangWithFallback(lang.current, "current", "adventure", "story");
 		while (true) {
 			if (now === -5) {
-				await io.printa(lang.current.adventure.missionComplete);
+				await io.printa(functions.getLangWithFallback(lang.current, "current", "adventure", "missionComplete"));
 				data.gameState.dataSaver.money += 100;
 				data.gameState.dataSaver.challengeLevel = 2;
 				return

@@ -95,15 +95,15 @@ export default function createFishing(functions, lang, data, io) {
 	async function getFish(isBigFish, fishType) {
 		await io.clear();
 		if (data.gameState.dataSaver.hunger <= 2) {
-			await io.printa(lang.current.fishing.youCaughtA + fishColor[fishType] + lang.current.fishing.fishName[fishType] + (isBigFish ? lang.current.fishing.big : "") + lang.current.fishing.fish + "\x1b[m, " + lang.current.fishing.eaten);
+			await io.printa(functions.getLangWithFallback(lang.current, "current", "fishing", "youCaughtA") + fishColor[fishType] + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", fishType) + (isBigFish ? functions.getLangWithFallback(lang.current, "current", "fishing", "big") : "") + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + "\x1b[m, " + functions.getLangWithFallback(lang.current, "current", "fishing", "eaten"));
 			data.gameState.dataSaver.hunger += fishType + 3;
 			return
 		}
 		const price = getRandomIncome((isBigFish ? 2 : 1) * data.constant.fishValueMultipliers[fishType]);
 		if (fishType === 4 && isBigFish) {
-			await io.printa(lang.current.fishing.youCaughtA + fishColor[fishType] + lang.current.fishing.egg + ", " + lang.current.fishing.worth + "$" + price)
+			await io.printa(functions.getLangWithFallback(lang.current, "current", "fishing", "youCaughtA") + fishColor[fishType] + functions.getLangWithFallback(lang.current, "current", "fishing", "egg") + ", " + functions.getLangWithFallback(lang.current, "current", "fishing", "worth") + "$" + price)
 		} else {
-			await io.printa(lang.current.fishing.youCaughtA + fishColor[fishType] + lang.current.fishing.fishName[fishType] + (isBigFish ? lang.current.fishing.big : "") + lang.current.fishing.fish + ", " + lang.current.fishing.worth + "$" + price)
+			await io.printa(functions.getLangWithFallback(lang.current, "current", "fishing", "youCaughtA") + fishColor[fishType] + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", fishType) + (isBigFish ? functions.getLangWithFallback(lang.current, "current", "fishing", "big") : "") + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + ", " + functions.getLangWithFallback(lang.current, "current", "fishing", "worth") + "$" + price)
 		}
 		fishInPond[fishType].push(10);
 		data.gameState.dataSaver.totalFishCaught++
@@ -188,12 +188,12 @@ export default function createFishing(functions, lang, data, io) {
 			}
 			if (!data.gameState.dataSaver.compactMode) {
 				if (notEnoughRows) {
-					await io.write(lang.current.fishing.notEnoughRows + " " + requiredRows + " " + lang.current.fishing.rows + "\n");
-					await io.write(lang.current.fishing.currentSize + ": " + data.gameState.consoleSize.rows + " " + lang.current.fishing.rows + "\n")
+					await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "notEnoughRows") + " " + requiredRows + " " + functions.getLangWithFallback(lang.current, "current", "fishing", "rows") + "\n");
+					await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "currentSize") + ": " + data.gameState.consoleSize.rows + " " + functions.getLangWithFallback(lang.current, "current", "fishing", "rows") + "\n")
 				}
 				if (notEnoughCols) {
-					await io.write(lang.current.fishing.notEnoughCols + " " + requiredCols + " " + lang.current.fishing.cols + "\n");
-					await io.write(lang.current.fishing.currentSize + ": " + data.gameState.consoleSize.cols + " " + lang.current.fishing.cols + "\n")
+					await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "notEnoughCols") + " " + requiredCols + " " + functions.getLangWithFallback(lang.current, "current", "fishing", "cols") + "\n");
+					await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "currentSize") + ": " + data.gameState.consoleSize.cols + " " + functions.getLangWithFallback(lang.current, "current", "fishing", "cols") + "\n")
 				}
 			}
 		} else {
@@ -228,17 +228,17 @@ export default function createFishing(functions, lang, data, io) {
 				await io.write("\n")
 			}
 		}
-		await io.write(lang.current.fishing.currentStatus + ": " + lang.current.fishing.waitingStatus[currentWaitingStatus] + "\n");
-		await io.write(lang.current.fishing.totalFishCaught + ": " + data.gameState.dataSaver.totalFishCaught + "\n");
-		await io.write(lang.current.fishing.currentWeather + ": " + lang.current.fishing.rainSize[currentWeather[1]] + lang.current.fishing.weatherNames[currentWeather[0]] + "\n");
+		await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "currentStatus") + ": " + functions.getLangListWithFallback(lang.current, "current", "fishing", "waitingStatus", currentWaitingStatus) + "\n");
+		await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "totalFishCaught") + ": " + data.gameState.dataSaver.totalFishCaught + "\n");
+		await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "currentWeather") + ": " + functions.getLangListWithFallback(lang.current, "current", "fishing", "rainSize", currentWeather[1]) + functions.getLangListWithFallback(lang.current, "current", "fishing", "weatherNames", currentWeather[0]) + "\n");
 		if (maxWaitingTime) {
 			if (minWaitingTime) {
-				await io.write(lang.current.fishing.remainingTime + ": " + minWaitingTime / 2 + " min ~ " + maxWaitingTime / 2 + " min\n")
+				await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "remainingTime") + ": " + minWaitingTime / 2 + " min ~ " + maxWaitingTime / 2 + " min\n")
 			} else {
-				await io.write(lang.current.fishing.remainingTime + ": < " + maxWaitingTime / 2 + " min\n")
+				await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "remainingTime") + ": < " + maxWaitingTime / 2 + " min\n")
 			}
 		}
-		await io.write((data.gameState.dataSaver.compactMode ? lang.current.fishing.exitCompactMode : lang.current.fishing.enterCompactMode) + "\n")
+		await io.write((data.gameState.dataSaver.compactMode ? functions.getLangWithFallback(lang.current, "current", "fishing", "exitCompactMode") : functions.getLangWithFallback(lang.current, "current", "fishing", "enterCompactMode")) + "\n")
 	}
 	async function slep(time) {
 		time = Math.round(time * 100) / 100;
@@ -580,22 +580,22 @@ export default function createFishing(functions, lang, data, io) {
 	}
 	async function makeFishingRod() {
 		await io.clear();
-		await io.print(lang.current.fishing.makeFishingRod);
-		await io.print(lang.current.fishing.currentFishingRod + lang.current.fishing.fishName[data.gameState.dataSaver.rodLevel] + lang.current.fishing.fishingRod);
+		await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "makeFishingRod"));
+		await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "currentFishingRod") + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", data.gameState.dataSaver.rodLevel) + functions.getLangWithFallback(lang.current, "current", "fishing", "fishingRod"));
 		let hasFishInPond = Array(8).fill(false);
 		let fishInPondChoices = "";
 		for (let i = 0; i <= 6; i++) {
 			hasFishInPond[i] = fishInPond[i].length !== 0;
 			if (hasFishInPond[i]) {
-				fishInPondChoices += i + ". " + lang.current.fishing.fishName[i] + lang.current.fishing.fishingRod + ", "
+				fishInPondChoices += i + ". " + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "fishingRod") + ", "
 			}
 		}
 		hasFishInPond[7] = true;
 		if (fishInPondChoices.length === 0) {
-			await io.print(lang.current.fishing.none);
+			await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "none"));
 			return
 		}
-		fishInPondChoices += "7. " + lang.current.exit;
+		fishInPondChoices += "7. " + functions.getLangWithFallback(lang.current, "current", "exit");
 		await io.print(fishInPondChoices);
 		let selectedFishInPondIndex;
 		do {
@@ -610,36 +610,36 @@ export default function createFishing(functions, lang, data, io) {
 	async function makeFood() {
 		while (true) {
 			await io.clear();
-			await io.print(lang.current.fishing.rawFish);
-			await io.print(lang.current.fishing.currentAmount);
+			await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "rawFish"));
+			await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "currentAmount"));
 			let hasFishInPond = Array(8).fill(false);
 			let fishInPondChoices = "";
 			for (let i = 0; i <= 6; i++) {
 				hasFishInPond[i] = fishInPond[i].length !== 0;
 				if (hasFishInPond[i]) {
-					fishInPondChoices += i + ". " + lang.current.fishing.fishName[i] + lang.current.fishing.fish + ", "
+					fishInPondChoices += i + ". " + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + ", "
 				}
 			}
 			hasFishInPond[7] = true;
 			if (fishInPondChoices.length === 0) {
-				await io.print(lang.current.fishing.none);
+				await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "none"));
 				await functions.sleep(.5);
 				return
 			}
-			fishInPondChoices += "7. " + lang.current.exit;
+			fishInPondChoices += "7. " + functions.getLangWithFallback(lang.current, "current", "exit");
 			for (let i = 1; i <= 6; i++) {
-				await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
+				await io.write(fishColor[i] + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + "\x1b[m\n");
 				if (fishInPond[i].length) {
-					await io.write("    " + lang.current.fishing.fishpond + ": " + fishInPond[i].length + lang.current.fishing.fishNumber + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "fishpond") + ": " + fishInPond[i].length + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 				}
 				if (data.gameState.dataSaver.foodFish[i][0]) {
-					await io.write("    " + lang.current.fishing.rawFish + ": " + data.gameState.dataSaver.foodFish[i][0] + lang.current.fishing.fishNumber + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "rawFish") + ": " + data.gameState.dataSaver.foodFish[i][0] + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 				}
 				if (data.gameState.dataSaver.foodFish[i][1]) {
-					await io.write("    " + lang.current.fishing.roastedFish + ": " + data.gameState.dataSaver.foodFish[i][1] + lang.current.fishing.fishNumber + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "roastedFish") + ": " + data.gameState.dataSaver.foodFish[i][1] + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 				}
 				if (fishInPond[i].length === 0 && !data.gameState.dataSaver.foodFish[i][0] && !data.gameState.dataSaver.foodFish[i][1]) {
-					await io.write("    " + lang.current.fishing.none + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "none") + "\n")
 				}
 			}
 			await io.write("\n");
@@ -660,36 +660,36 @@ export default function createFishing(functions, lang, data, io) {
 	}
 	async function roastFish() {
 		await io.clear();
-		await io.print(lang.current.fishing.roastedFish);
-		await io.print(lang.current.fishing.currentAmount + ": ");
+		await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "roastedFish"));
+		await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "currentAmount") + ": ");
 		let hasFishInPond = Array(8).fill(false);
 		let fishInPondChoices = "";
 		for (let i = 0; i <= 6; i++) {
 			hasFishInPond[i] = Boolean(data.gameState.dataSaver.foodFish[i][0]);
 			if (hasFishInPond[i]) {
-				fishInPondChoices += i + ". " + lang.current.fishing.fishName[i] + lang.current.fishing.fish + ", "
+				fishInPondChoices += i + ". " + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + ", "
 			}
 		}
 		hasFishInPond[7] = true;
 		if (fishInPondChoices.length === 0) {
-			await io.print(lang.current.fishing.none);
+			await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "none"));
 			await functions.sleep(.5);
 			return
 		}
-		fishInPondChoices += "7. " + lang.current.exit;
+		fishInPondChoices += "7. " + functions.getLangWithFallback(lang.current, "current", "exit");
 		for (let i = 1; i <= 6; i++) {
-			await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
+			await io.write(fishColor[i] + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + "\x1b[m\n");
 			if (fishInPond[i].length) {
-				await io.write("    " + lang.current.fishing.fishpond + ": " + fishInPond[i].length + lang.current.fishing.fishNumber + "\n")
+				await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "fishpond") + ": " + fishInPond[i].length + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 			}
 			if (data.gameState.dataSaver.foodFish[i][0]) {
-				await io.write("    " + lang.current.fishing.rawFish + ": " + data.gameState.dataSaver.foodFish[i][0] + lang.current.fishing.fishNumber + "\n")
+				await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "rawFish") + ": " + data.gameState.dataSaver.foodFish[i][0] + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 			}
 			if (data.gameState.dataSaver.foodFish[i][1]) {
-				await io.write("    " + lang.current.fishing.roastedFish + ": " + data.gameState.dataSaver.foodFish[i][1] + lang.current.fishing.fishNumber + "\n")
+				await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "roastedFish") + ": " + data.gameState.dataSaver.foodFish[i][1] + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 			}
 			if (fishInPond[i].length === 0 && !data.gameState.dataSaver.foodFish[i][0] && !data.gameState.dataSaver.foodFish[i][1]) {
-				await io.write("    " + lang.current.fishing.none + "\n")
+				await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "none") + "\n")
 			}
 		}
 		await io.write("\n");
@@ -706,8 +706,8 @@ export default function createFishing(functions, lang, data, io) {
 		let count = 0;
 		while (true) {
 			await io.clear();
-			await io.write(lang.current.fishing.makeFoodAction + "\n" + lang.current.fishing.makeRoastedFish + ": " + fishColor[selectedFishInPondIndex] + lang.current.fishing.fishName[selectedFishInPondIndex] + lang.current.fishing.fish + "\x1b[m\n");
-			await io.write((count === minCount ? "\x1b[1;31m" : "\x1b[1m") + " < \x1b[m" + count + lang.current.fishing.fishNumber + (count === maxCount ? "\x1b[1;31m" : "\x1b[1m") + " > \x1b[m\n");
+			await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "makeFoodAction") + "\n" + functions.getLangWithFallback(lang.current, "current", "fishing", "makeRoastedFish") + ": " + fishColor[selectedFishInPondIndex] + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", selectedFishInPondIndex) + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + "\x1b[m\n");
+			await io.write((count === minCount ? "\x1b[1;31m" : "\x1b[1m") + " < \x1b[m" + count + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + (count === maxCount ? "\x1b[1;31m" : "\x1b[1m") + " > \x1b[m\n");
 			const input = await io.getch();
 			if (input === "a" || input === "A") {
 				count--;
@@ -731,7 +731,7 @@ export default function createFishing(functions, lang, data, io) {
 				for (let i = 0; i < roastingTime; i++) {
 					for (let j = 0; j < 20; j++) {
 						await io.clear();
-						await io.write(lang.current.fishing.roasting + "\n");
+						await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "roasting") + "\n");
 						const currentRoastingTime = i * 20 + j;
 						let done = Math.floor(currentRoastingTime / roastingTime * 3);
 						let d2 = done % 2;
@@ -746,17 +746,17 @@ export default function createFishing(functions, lang, data, io) {
 							await io.write("\x1b[31;1m=\x1b[m")
 						}
 						await io.write("\n");
-						await io.write(i * data.gameState.dataSaver.ovenCount + "/" + count + lang.current.fishing.done + "\n");
+						await io.write(i * data.gameState.dataSaver.ovenCount + "/" + count + functions.getLangWithFallback(lang.current, "current", "fishing", "done") + "\n");
 						await functions.sleep(.5)
 					}
 				}
 				await io.clear();
-				await io.write(lang.current.fishing.done + "\n");
+				await io.write(functions.getLangWithFallback(lang.current, "current", "fishing", "done") + "\n");
 				for (let k = 0; k < 30; k++) {
 					await io.write("\x1b[32;1m=\x1b[m")
 				}
 				await io.write("\n");
-				await io.write(count + "/" + count + lang.current.fishing.done + "\n");
+				await io.write(count + "/" + count + functions.getLangWithFallback(lang.current, "current", "fishing", "done") + "\n");
 				await functions.sleep();
 				return
 			} else if (input === "") {
@@ -768,32 +768,32 @@ export default function createFishing(functions, lang, data, io) {
 	async function eatFish() {
 		while (true) {
 			await io.clear();
-			await io.print(lang.current.fishing.eatRawFish);
-			await io.printnl(lang.current.fishing.currentHunger + ": ");
+			await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "eatRawFish"));
+			await io.printnl(functions.getLangWithFallback(lang.current, "current", "fishing", "currentHunger") + ": ");
 			await io.write((data.gameState.dataSaver.hunger < 10 ? "\x1b[31;1m" : data.gameState.dataSaver.hunger < 30 ? "" : data.gameState.dataSaver.hunger < 35 ? "\x1b[32m" : "\x1b[32;1m") + data.gameState.dataSaver.hunger + "\x1b[m\n");
-			await io.print(lang.current.fishing.currentAmount + ": ");
+			await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "currentAmount") + ": ");
 			let hasFishInPond = Array(8).fill(false);
 			let fishInPondChoices = "";
 			for (let i = 0; i <= 6; i++) {
 				hasFishInPond[i] = Boolean(data.gameState.dataSaver.foodFish[i][0]);
 				if (hasFishInPond[i]) {
-					fishInPondChoices += i + ". " + lang.current.fishing.fishName[i] + lang.current.fishing.rawFish + ", "
+					fishInPondChoices += i + ". " + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "rawFish") + ", "
 				}
 			}
 			hasFishInPond[7] = true;
 			if (fishInPondChoices.length === 0) {
-				await io.print(lang.current.fishing.none);
+				await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "none"));
 				await functions.sleep(.5);
 				return
 			}
-			fishInPondChoices += "7. " + lang.current.exit;
+			fishInPondChoices += "7. " + functions.getLangWithFallback(lang.current, "current", "exit");
 			for (let i = 1; i <= 6; i++) {
-				await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
+				await io.write(fishColor[i] + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + "\x1b[m\n");
 				if (data.gameState.dataSaver.foodFish[i][0]) {
-					await io.write("    " + lang.current.fishing.rawFish + ": " + data.gameState.dataSaver.foodFish[i][0] + lang.current.fishing.fishNumber + " + " + (i + 3) + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "rawFish") + ": " + data.gameState.dataSaver.foodFish[i][0] + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + " + " + (i + 3) + "\n")
 				}
 				if (!data.gameState.dataSaver.foodFish[i][0] && !data.gameState.dataSaver.foodFish[i][1]) {
-					await io.write("    " + lang.current.fishing.none + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "none") + "\n")
 				}
 			}
 			await io.write("\n");
@@ -819,32 +819,32 @@ export default function createFishing(functions, lang, data, io) {
 	async function eatRoastedFish() {
 		while (true) {
 			await io.clear();
-			await io.print(lang.current.fishing.eatRoastedFish);
-			await io.printnl(lang.current.fishing.currentHunger + ": ");
+			await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "eatRoastedFish"));
+			await io.printnl(functions.getLangWithFallback(lang.current, "current", "fishing", "currentHunger") + ": ");
 			await io.write((data.gameState.dataSaver.hunger < 10 ? "\x1b[31;1m" : data.gameState.dataSaver.hunger < 30 ? "" : data.gameState.dataSaver.hunger < 35 ? "\x1b[32m" : "\x1b[32;1m") + data.gameState.dataSaver.hunger + "\x1b[m\n");
-			await io.print(lang.current.fishing.currentAmount + ": ");
+			await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "currentAmount") + ": ");
 			let hasFishInPond = Array(8).fill(false);
 			let fishInPondChoices = "";
 			for (let i = 0; i <= 6; i++) {
 				hasFishInPond[i] = Boolean(data.gameState.dataSaver.foodFish[i][1]);
 				if (hasFishInPond[i]) {
-					fishInPondChoices += i + ". " + lang.current.fishing.fishName[i] + lang.current.fishing.eatRoastedFish + ", "
+					fishInPondChoices += i + ". " + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "eatRoastedFish") + ", "
 				}
 			}
 			hasFishInPond[7] = true;
 			if (fishInPondChoices.length === 0) {
-				await io.print(lang.current.fishing.none);
+				await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "none"));
 				await functions.sleep(.5);
 				return
 			}
-			fishInPondChoices += "7. " + lang.current.exit;
+			fishInPondChoices += "7. " + functions.getLangWithFallback(lang.current, "current", "exit");
 			for (let i = 1; i <= 6; i++) {
-				await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
+				await io.write(fishColor[i] + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + "\x1b[m\n");
 				if (data.gameState.dataSaver.foodFish[i][1]) {
-					await io.write("    " + lang.current.fishing.roastedFish + ": " + data.gameState.dataSaver.foodFish[i][1] + lang.current.fishing.fishNumber + " + " + (i + 7) + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "roastedFish") + ": " + data.gameState.dataSaver.foodFish[i][1] + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + " + " + (i + 7) + "\n")
 				}
 				if (!data.gameState.dataSaver.foodFish[i][0] && !data.gameState.dataSaver.foodFish[i][1]) {
-					await io.write("    " + lang.current.fishing.none + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "none") + "\n")
 				}
 			}
 			await io.write("\n");
@@ -869,23 +869,23 @@ export default function createFishing(functions, lang, data, io) {
 	async function eatMenuNoOven() {
 		while (true) {
 			await io.clear();
-			await io.print(functions.listToChoice(lang.current.fishing.noOvenMenu));
-			await io.printnl(lang.current.fishing.currentHunger + ": ");
+			await io.print(functions.listToChoice(functions.getLangWithFallback(lang.current, "current", "fishing", "noOvenMenu")));
+			await io.printnl(functions.getLangWithFallback(lang.current, "current", "fishing", "currentHunger") + ": ");
 			await io.write((data.gameState.dataSaver.hunger < 10 ? "\x1b[31;1m" : data.gameState.dataSaver.hunger < 30 ? "" : data.gameState.dataSaver.hunger < 35 ? "\x1b[32m" : "\x1b[32;1m") + data.gameState.dataSaver.hunger + "\x1b[m\n");
-			await io.print(lang.current.fishing.currentAmount + ": ");
+			await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "currentAmount") + ": ");
 			for (let i = 1; i <= 6; i++) {
-				await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
+				await io.write(fishColor[i] + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + "\x1b[m\n");
 				if (fishInPond[i].length) {
-					await io.write("    " + lang.current.fishing.fishpond + ": " + fishInPond[i].length + lang.current.fishing.fishNumber + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "fishpond") + ": " + fishInPond[i].length + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 				}
 				if (data.gameState.dataSaver.foodFish[i][0]) {
-					await io.write("    " + lang.current.fishing.rawFish + ": " + data.gameState.dataSaver.foodFish[i][0] + lang.current.fishing.fishNumber + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "rawFish") + ": " + data.gameState.dataSaver.foodFish[i][0] + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 				}
 				if (data.gameState.dataSaver.foodFish[i][1]) {
-					await io.write("    " + lang.current.fishing.roastedFish + ": " + data.gameState.dataSaver.foodFish[i][1] + lang.current.fishing.fishNumber + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "roastedFish") + ": " + data.gameState.dataSaver.foodFish[i][1] + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 				}
 				if (fishInPond[i].length === 0 && !data.gameState.dataSaver.foodFish[i][0] && !data.gameState.dataSaver.foodFish[i][1]) {
-					await io.write("    " + lang.current.fishing.none + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "none") + "\n")
 				}
 			}
 			while (true) {
@@ -910,23 +910,23 @@ export default function createFishing(functions, lang, data, io) {
 		}
 		while (true) {
 			await io.clear();
-			await io.print(functions.listToChoice(lang.current.fishing.ovenMenu));
-			await io.printnl(lang.current.fishing.currentHunger + ": ");
+			await io.print(functions.listToChoice(functions.getLangWithFallback(lang.current, "current", "fishing", "ovenMenu")));
+			await io.printnl(functions.getLangWithFallback(lang.current, "current", "fishing", "currentHunger") + ": ");
 			await io.write((data.gameState.dataSaver.hunger < 10 ? "\x1b[31;1m" : data.gameState.dataSaver.hunger < 30 ? "" : data.gameState.dataSaver.hunger < 35 ? "\x1b[32m" : "\x1b[32;1m") + data.gameState.dataSaver.hunger + "\x1b[m\n");
-			await io.print(lang.current.fishing.currentAmount + ": ");
+			await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "currentAmount") + ": ");
 			for (let i = 1; i <= 6; i++) {
-				await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
+				await io.write(fishColor[i] + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + "\x1b[m\n");
 				if (fishInPond[i].length) {
-					await io.write("    " + lang.current.fishing.fishpond + ": " + fishInPond[i].length + lang.current.fishing.fishNumber + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "fishpond") + ": " + fishInPond[i].length + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 				}
 				if (data.gameState.dataSaver.foodFish[i][0]) {
-					await io.write("    " + lang.current.fishing.rawFish + ": " + data.gameState.dataSaver.foodFish[i][0] + lang.current.fishing.fishNumber + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "rawFish") + ": " + data.gameState.dataSaver.foodFish[i][0] + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 				}
 				if (data.gameState.dataSaver.foodFish[i][1]) {
-					await io.write("    " + lang.current.fishing.roastFish + ": " + data.gameState.dataSaver.foodFish[i][1] + lang.current.fishing.fishNumber + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "roastFish") + ": " + data.gameState.dataSaver.foodFish[i][1] + functions.getLangWithFallback(lang.current, "current", "fishing", "fishNumber") + "\n")
 				}
 				if (fishInPond[i].length === 0 && !data.gameState.dataSaver.foodFish[i][0] && !data.gameState.dataSaver.foodFish[i][1]) {
-					await io.write("    " + lang.current.fishing.none + "\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "none") + "\n")
 				}
 			}
 			await io.write("\n");
@@ -954,12 +954,12 @@ export default function createFishing(functions, lang, data, io) {
 	async function run() {
 		while (true) {
 			await io.clear();
-			await io.print(functions.listToChoice(lang.current.fishing.mainMenu));
-			await io.printnl(lang.current.fishing.currentHunger + ": ");
+			await io.print(functions.listToChoice(functions.getLangWithFallback(lang.current, "current", "fishing", "mainMenu")));
+			await io.printnl(functions.getLangWithFallback(lang.current, "current", "fishing", "currentHunger") + ": ");
 			await io.write((data.gameState.dataSaver.hunger < 10 ? "\x1b[31;1m" : data.gameState.dataSaver.hunger < 30 ? "" : data.gameState.dataSaver.hunger < 35 ? "\x1b[32m" : "\x1b[32;1m") + data.gameState.dataSaver.hunger + "\x1b[m\n");
-			await io.print(lang.current.fishing.currentFishingRod + ": " + lang.current.fishing.fishName[data.gameState.dataSaver.rodLevel] + lang.current.fishing.fishingRod);
+			await io.print(functions.getLangWithFallback(lang.current, "current", "fishing", "currentFishingRod") + ": " + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", data.gameState.dataSaver.rodLevel) + functions.getLangWithFallback(lang.current, "current", "fishing", "fishingRod"));
 			for (let i = 0; i <= 6; i++) {
-				await io.write(fishColor[i] + lang.current.fishing.fishName[i] + lang.current.fishing.fish + "\x1b[m\n");
+				await io.write(fishColor[i] + functions.getLangListWithFallback(lang.current, "current", "fishing", "fishName", i) + functions.getLangWithFallback(lang.current, "current", "fishing", "fish") + "\x1b[m\n");
 				for (let j = 0; j < fishInPond[i].length; j++) {
 					if (fishInPond[i][j] >= 8) {
 						await io.write("\x1b[1;32m")
@@ -968,10 +968,10 @@ export default function createFishing(functions, lang, data, io) {
 					} else {
 						await io.write("\x1b[1m")
 					}
-					await io.write("    " + lang.current.fishing.freshness + ": " + fishInPond[i][j] + "\x1b[m\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "freshness") + ": " + fishInPond[i][j] + "\x1b[m\n")
 				}
 				if (fishInPond[i].length === 0) {
-					await io.write("    " + lang.current.fishing.none + "\x1b[m\n")
+					await io.write("    " + functions.getLangWithFallback(lang.current, "current", "fishing", "none") + "\x1b[m\n")
 				}
 			}
 			while (true) {

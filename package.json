@@ -1,6 +1,6 @@
 {
 	"name": "fishing-game",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "Terminal-style fishing game (ESM library + Electron shell)",
 	"private": true,
 	"type": "module",

@@ -19,36 +19,36 @@ export default function createCheckpoint(functions, lang, data, io, normalizeDat
 			let username = "";
 			let password = "";
 			await io.clear();
-			await io.print(functions.capitalize(lang.current.checkpoint.login));
-			await io.printnl(functions.capitalize(lang.current.checkpoint.username) + ": ");
+			await io.print(functions.capitalize(functions.getLangWithFallback(lang.current, "current", "checkpoint", "login")));
+			await io.printnl(functions.capitalize(functions.getLangWithFallback(lang.current, "current", "checkpoint", "username")) + ": ");
 			if (data.gameState.settings.forceUsername) {
 				username = data.gameState.settings.forceUsername;
 				await io.write(username + "\n")
 			} else {
 				username = await io.getline(false);
 				if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
-					await io.print(lang.current.checkpoint.invalidUsername);
+					await io.print(functions.getLangWithFallback(lang.current, "current", "checkpoint", "invalidUsername"));
 					await functions.sleep(1);
 					continue
 				}
 			}
 			const userState = await data.gameState.requiredFunctions.hasSave(username);
 			if (!userState?.code) {
-				await io.print(functions.capitalize(lang.current.checkpoint.apiError));
+				await io.print(functions.capitalize(functions.getLangWithFallback(lang.current, "current", "checkpoint", "apiError")));
 				await functions.sleep(1);
 				continue
 			}
 			const isNew = userState.code === 2;
-			await io.printnl(functions.capitalize(lang.current.checkpoint.password) + ": ");
+			await io.printnl(functions.capitalize(functions.getLangWithFallback(lang.current, "current", "checkpoint", "password")) + ": ");
 			if (data.gameState.settings.forceBlancPassword) {
 				await io.write("\n")
 			} else {
 				password = await io.getline(true);
 				if (isNew) {
-					await io.printnl(functions.capitalize(lang.current.checkpoint.confirmPassword) + ": ");
+					await io.printnl(functions.capitalize(functions.getLangWithFallback(lang.current, "current", "checkpoint", "confirmPassword")) + ": ");
 					let newPassword = await io.getline(true);
 					if (newPassword !== password) {
-						await io.print(lang.current.checkpoint.passwordNotMatch);
+						await io.print(functions.getLangWithFallback(lang.current, "current", "checkpoint", "passwordNotMatch"));
 						await functions.sleep(1);
 						continue
 					}
@@ -59,19 +59,19 @@ export default function createCheckpoint(functions, lang, data, io, normalizeDat
 			if (!isNew) {
 				const loadState = await loadGame();
 				if (loadState?.code !== 1) {
-					await io.print(lang.current.checkpoint.apiError);
+					await io.print(functions.getLangWithFallback(lang.current, "current", "checkpoint", "apiError"));
 					await functions.sleep(1);
 					continue
 				}
 			}
 			const saveState = await saveGame();
 			if (!saveState?.code) {
-				await io.print(lang.current.checkpoint.apiError);
+				await io.print(functions.getLangWithFallback(lang.current, "current", "checkpoint", "apiError"));
 				await functions.sleep(1);
 				continue
 			}
 			if (saveState.code === 2) {
-				await io.print(lang.current.checkpoint.passwordError);
+				await io.print(functions.getLangWithFallback(lang.current, "current", "checkpoint", "passwordError"));
 				await functions.sleep(1);
 				continue
 			}
@@ -82,15 +82,15 @@ export default function createCheckpoint(functions, lang, data, io, normalizeDat
 	async function load() {
 		const loadState = await loadGame();
 		if (loadState?.code !== 1) {
-			await io.printa(lang.current.checkpoint.apiError)
+			await io.printa(functions.getLangWithFallback(lang.current, "current", "checkpoint", "apiError"))
 		}
 	}
 	async function save() {
 		const saveState = await saveGame();
 		if (!saveState?.code) {
-			await io.printa(lang.current.checkpoint.apiError)
+			await io.printa(functions.getLangWithFallback(lang.current, "current", "checkpoint", "apiError"))
 		} else if (saveState.code === 2) {
-			await io.printa(lang.current.checkpoint.passwordError)
+			await io.printa(functions.getLangWithFallback(lang.current, "current", "checkpoint", "passwordError"))
 		}
 	}
 	return Object.freeze({

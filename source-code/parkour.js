@@ -124,7 +124,7 @@ export default function createParkour(functions, lang, data, io) {
 			}
 			if (isAirAbove()) {
 				sinkTimer = 0;
-				await io.write(functions.getLangWithFallback(lang.current, "current", "parkour", "jumpTip") + "\n");
+				await io.write(lang.current.parkour.jumpTip + "\n");
 				await show();
 				let shouldJump = false;
 				let shouldRespawn = false;
@@ -142,14 +142,14 @@ export default function createParkour(functions, lang, data, io) {
 				}
 				if (isFinishCell(x, y - 1)) {
 					await io.clear();
-					await io.printa(functions.getLangWithFallback(lang.current, "current", "parkour", "challengeCompleteReward"));
+					await io.printa(lang.current.parkour.challengeCompleteReward);
 					data.gameState.dataSaver.money += 500;
 					data.gameState.dataSaver.challengeLevel = 1;
 					return
 				}
 				if (isLavaCell()) {
-					await io.print(functions.getLangWithFallback(lang.current, "current", "parkour", "deathMessage"));
-					if (!await io.printYn(functions.getLangWithFallback(lang.current, "current", "parkour", "respawnConfirm"))) {
+					await io.print(lang.current.parkour.deathMessage);
+					if (!await io.printYn(lang.current.parkour.respawnConfirm)) {
 						return
 					}
 					x = born[level][0];
@@ -240,7 +240,7 @@ export default function createParkour(functions, lang, data, io) {
 				await functions.sleep(.1)
 			} else {
 				jumpCarry = false;
-				await io.write(functions.getLangWithFallback(lang.current, "current", "parkour", "swimTip") + "\n");
+				await io.write(lang.current.parkour.swimTip + "\n");
 				await show();
 				sinkTimer++;
 				sinkTimer %= 5;
@@ -270,8 +270,8 @@ export default function createParkour(functions, lang, data, io) {
 					}
 				}
 				if (isLavaCell()) {
-					await io.print(functions.getLangWithFallback(lang.current, "current", "parkour", "deathMessage"));
-					if (!await io.printYn(functions.getLangWithFallback(lang.current, "current", "parkour", "respawnConfirm"))) {
+					await io.print(lang.current.parkour.deathMessage);
+					if (!await io.printYn(lang.current.parkour.respawnConfirm)) {
 						return
 					}
 					x = born[level][0];

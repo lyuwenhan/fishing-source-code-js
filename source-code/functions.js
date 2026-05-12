@@ -106,26 +106,6 @@ export default function createFunctions() {
 		}
 		return Math.min(max, Math.max(min, Math.trunc(numberValue)))
 	}
-
-	function getLangWithFallback(lang, langCode, ...path) {
-		if (path.length < 1) {
-			return `lang.${langCode}.unknown`
-		}
-		const text = path.reduce((obj, key) => obj?.[key], lang);
-		return text ?? `lang.${langCode}.${path.join(".")}`
-	}
-
-	function getLangListWithFallback(lang, langCode, ...path) {
-		if (path.length < 2) {
-			return `lang.${langCode}.unknown`
-		}
-		const index = path.pop();
-		if (!Number.isInteger(index) || index < 0) {
-			return `lang.${langCode}.${path.join(".")}.${index}`
-		}
-		const text = path.reduce((obj, key) => obj?.[key], lang)?.[index];
-		return text ?? `lang.${langCode}.${path.join(".")}[${index}]`
-	}
 	return Object.freeze({
 		listToChoice,
 		isNumberBetween,
@@ -137,8 +117,6 @@ export default function createFunctions() {
 		deepCopy,
 		deepMerge,
 		clamp,
-		clampInt,
-		getLangWithFallback,
-		getLangListWithFallback
+		clampInt
 	})
 }

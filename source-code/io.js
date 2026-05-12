@@ -83,7 +83,7 @@ export default function createIo(functions, lang, data) {
 			} else {
 				for (const char of String(text || "")) {
 					await write(char);
-					await functions.sleep(time / (data.gameState.dataSaver.textSpeed + 1) / functions.getLangWithFallback(lang.current, "current", "io", "outputSpeed"))
+					await functions.sleep(time / (data.gameState.dataSaver.textSpeed + 1) / lang.current.io.outputSpeed)
 				}
 			}
 		} finally {
@@ -95,7 +95,7 @@ export default function createIo(functions, lang, data) {
 		await write("\n")
 	}
 	async function printa(text = "", time = .02) {
-		await print(text + (text ? "    " : "") + "(" + functions.capitalize(functions.getLangWithFallback(lang.current, "current", "io", "pressEnterToContinue")) + ")", time);
+		await print(text + (text ? "    " : "") + "(" + functions.capitalize(lang.current.io.pressEnterToContinue) + ")", time);
 		while (await getch() !== "\r");
 	}
 	async function printYn(text = "", time = .02) {
